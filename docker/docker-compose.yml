@@ -1,0 +1,17 @@
+version: '2'
+
+networks:
+  dev_net:
+    external: true
+
+services:
+  monitoring:
+    container_name: monitoring
+    image: fmoni
+    volumes:
+      - $GOPATH/src/github.ibm.com/fgchain/finline-java/conf/docker-net-config.yaml:/etc/conf/net-config.yaml
+    ports:
+      - "3000:3000"
+      - "8086:8086"
+    networks:
+      - dev_net

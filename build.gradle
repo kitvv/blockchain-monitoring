@@ -1,0 +1,66 @@
+group 'org.hyperledger'
+version '1.0-SNAPSHOT'
+
+version '1.0'
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.2.RELEASE")
+        classpath('se.transmode.gradle:gradle-docker:1.2')
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+def springVersion = "4.3.7.RELEASE"
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter")
+    compile "org.springframework:spring-context:${springVersion}"
+    compile "org.springframework:spring-webmvc:${springVersion}"
+    compile "org.springframework:spring-web:${springVersion}"
+    compile "org.springframework:spring-core:${springVersion}"
+    compile "org.springframework:spring-beans:${springVersion}"
+    compile "org.springframework:spring-aspects:${springVersion}"
+    compile "org.springframework:spring-messaging:${springVersion}"
+    compile "org.springframework:spring-websocket:${springVersion}"
+    compile "org.influxdb:influxdb-java:2.5"
+    compile "commons-logging:commons-logging:1.2"
+    compile "org.hyperledger:monitoring-api:1.0"
+    compile "org.hyperledger:fly-spring:1.0"
+}
+
+apply plugin: 'docker'
+
+jar {
+    baseName = 'monitoring'
+    version =  '1.0.0'
+}
+
+docker {
+    baseImage = 'java:8'
+}
+
+task buildDocker(type: Docker, dependsOn: build) {
+    exposePort 8080
+    addFile jar.archivePath, jar.archiveName
+    entryPoint(["java", "-jar", jar.archiveName])
+}
+
+bootRun {
+    systemProperty "spring.profiles.active", "local"
+    println "bootRun 'spring.profiles.active:influx,local'"
+}
