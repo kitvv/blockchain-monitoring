@@ -2,6 +2,6 @@
 
 cd /
 
-./grafana_runner.sh &
-./influx_runner.sh &
+nohup ./grafana_runner.sh
+nohup ./influx_runner.sh
 java -jar monitoring.jar

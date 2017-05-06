@@ -12,6 +12,5 @@ services:
       - $GOPATH/src/github.ibm.com/fgchain/finline-java/conf/docker-net-config.yaml:/etc/conf/net-config.yaml
     ports:
       - "3000:3000"
-      - "8086:8086"
     networks:
       - dev_net

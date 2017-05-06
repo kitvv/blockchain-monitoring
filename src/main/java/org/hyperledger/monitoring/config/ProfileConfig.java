@@ -2,7 +2,7 @@ package org.hyperledger.monitoring.config;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hyperledger.monitoring.model.ProfileInfo;
+import org.hyperledger.monitoring.model.MonitoringParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,29 +21,20 @@ public class ProfileConfig {
     private StandardEnvironment environment;
 
     @Bean
-    public ProfileInfo activeProfileInfo() throws Exception {
-        final boolean isLocal = Arrays.stream(environment.getActiveProfiles()).anyMatch(
-                env -> (env.equalsIgnoreCase("local")));
-//        final boolean isDocker = Arrays.stream(environment.getActiveProfiles()).anyMatch(
-//                env -> (env.equalsIgnoreCase("docker")));
-
-        String type;
-        if (isLocal) {
-            type = "local";
-        } else {
-            type = "docker"; // default type
-        }
-
+    public MonitoringParams activeProfileInfo() throws Exception {
         final String configPath = getProperty("fly.netconfig");
-        final String urlInfluxDB = getProperty("influxDB.url." + type);
-        final String urlGrafana = getProperty("grafana.url." + type);
-        // TODO move to monitoring
-        final String dashboardsGrafana = getProperty("grafana.dashboards." + type);
-        final String datasourcesGrafana = getProperty("grafana.datasources." + type);
+        final String urlInfluxDB = getProperty("influxDB.url");
+        final String urlGrafana = getProperty("grafana.url");
 
-        final ProfileInfo profileInfo = new ProfileInfo(configPath, urlInfluxDB, urlGrafana, dashboardsGrafana, datasourcesGrafana);
-        log.info(profileInfo.toString());
-        return profileInfo;
+        final String dashboardsGrafana = getProperty("grafana.dashboards");
+        final String datasourcesGrafana = getProperty("grafana.datasources");
+
+        final String usernameInfluxDB = getProperty("influxDB.username");
+        final String passwordInfluxDB = getProperty("influxDB.password");
+
+        final MonitoringParams monitoringParams = new MonitoringParams(configPath, urlInfluxDB, urlGrafana, dashboardsGrafana, datasourcesGrafana, usernameInfluxDB, passwordInfluxDB);
+        log.info(monitoringParams.toString());
+        return monitoringParams;
     }
 
     private String getPropertyFromRoot(String name) {

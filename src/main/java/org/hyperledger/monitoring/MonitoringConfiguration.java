@@ -13,7 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hyperledger.fabric.client.fly.spring.FlyNet;
 import org.hyperledger.fabric.sdk.Peer;
 import org.hyperledger.monitoring.api.InfluxWriter;
-import org.hyperledger.monitoring.model.ProfileInfo;
+import org.hyperledger.monitoring.model.MonitoringParams;
 import org.hyperledger.monitoring.model.grafana.dashboard.Dashboard;
 import org.hyperledger.monitoring.model.grafana.dashboard.Panel;
 import org.hyperledger.monitoring.model.grafana.dashboard.Row;
@@ -41,7 +41,7 @@ public class MonitoringConfiguration {
     private InfluxWriter influxWriter;
 
     @Autowired
-    private ProfileInfo activeProfileInfo;
+    private MonitoringParams monitoringParams;
 
     @Autowired
     private FlyNet flyNet;
@@ -72,7 +72,7 @@ public class MonitoringConfiguration {
 
     private void initDatasources() throws IOException {
         log.info("start init grafana datasources");
-        final File datasourcesTemplate = new File(activeProfileInfo.getDatasourcesGrafana());
+        final File datasourcesTemplate = new File(monitoringParams.getDatasourcesGrafana());
         final Datasource datasource = mapper.readValue(datasourcesTemplate, Datasource.class);
 
 
@@ -82,14 +82,14 @@ public class MonitoringConfiguration {
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<Datasource> request = new HttpEntity<>(datasource, headers);
         ;
-        final String datasourcesURL = activeProfileInfo.getUrlGrafana() + "/api/datasources";
+        final String datasourcesURL = monitoringParams.getUrlGrafana() + "/api/datasources";
         restTemplate.postForObject(datasourcesURL, request, String.class);
         log.info("finish init grafana datasources");
     }
 
     private void initDashboards() throws IOException {
         log.info("start init grafana dashboards");
-        final File datasourcesTemplate = new File(activeProfileInfo.getDashboardsGrafana());
+        final File datasourcesTemplate = new File(monitoringParams.getDashboardsGrafana());
         final Dashboard dashboard = mapper.readValue(datasourcesTemplate, Dashboard.class);
 
         // TODO динамичая загрузка борды из flyNet
@@ -124,7 +124,7 @@ public class MonitoringConfiguration {
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<Dashboard> request = new HttpEntity<>(dashboard, headers);
 
-        final String dashboardsURL = activeProfileInfo.getUrlGrafana() + "/api/dashboards/db";
+        final String dashboardsURL = monitoringParams.getUrlGrafana() + "/api/dashboards/db";
         restTemplate.postForObject(dashboardsURL, request, String.class);
         log.info("finish init grafana dashboards");
     }

@@ -1,18 +1,25 @@
 package org.hyperledger.monitoring.model;
 
-public class ProfileInfo {
+/**
+ * Created by Ruslan Kryukov on 04/05/2017.
+ */
+public class MonitoringParams {
     private final String configPath;
     private final String urlInfluxDB;
     private final String urlGrafana;
     private final String dashboardsGrafana;
     private final String datasourcesGrafana;
+    private final String usernameInfluxDB;
+    private final String passwordInfluxDB;
 
-    public ProfileInfo(String configPath, String urlInfluxDB, String urlGrafana, String dashboardsGrafana, String datasourcesGrafana) {
+    public MonitoringParams(String configPath, String urlInfluxDB, String urlGrafana, String dashboardsGrafana, String datasourcesGrafana, String usernameInfluxDB, String passwordInfluxDB) {
         this.configPath = configPath;
         this.urlInfluxDB = urlInfluxDB;
         this.urlGrafana = urlGrafana;
         this.dashboardsGrafana = dashboardsGrafana;
         this.datasourcesGrafana = datasourcesGrafana;
+        this.usernameInfluxDB = usernameInfluxDB;
+        this.passwordInfluxDB = passwordInfluxDB;
     }
 
     public String getConfigPath() {
@@ -33,5 +40,13 @@ public class ProfileInfo {
 
     public String getDatasourcesGrafana() {
         return datasourcesGrafana;
+    }
+
+    public String getUsernameInfluxDB() {
+        return usernameInfluxDB;
+    }
+
+    public String getPasswordInfluxDB() {
+        return passwordInfluxDB;
     }
 }

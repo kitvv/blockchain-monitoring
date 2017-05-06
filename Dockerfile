@@ -21,8 +21,6 @@ RUN apt-get update && \
         --keyserver hkp://ha.pool.sks-keyservers.net \
         --recv-keys 05CE15085FC09D18E99EFB22684A14CF2582E0C5
 
-
-
 RUN wget -q https://dl.influxdata.com/influxdb/releases/influxdb_${INFLUXDB_VERSION}_amd64.deb.asc && \
     wget -q https://dl.influxdata.com/influxdb/releases/influxdb_${INFLUXDB_VERSION}_amd64.deb && \
     gpg --batch --verify influxdb_${INFLUXDB_VERSION}_amd64.deb.asc influxdb_${INFLUXDB_VERSION}_amd64.deb && \
@@ -47,6 +45,5 @@ COPY docker/runall.sh /runall.sh
 VOLUME ["/var/lib/grafana", "/var/log/grafana", "/etc/grafana", "/var/lib/influxdb", "/etc/conf/net-config.yaml"]
 
 EXPOSE 3000
-EXPOSE 8086
 
 ENTRYPOINT ["/runall.sh"]
