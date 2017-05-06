@@ -7,9 +7,9 @@ networks:
 services:
   monitoring:
     container_name: monitoring
-    image: fmoni
+    image: fabricmonitoring/fabric-monitoring:1.0.0
     volumes:
-      - $GOPATH/src/github.ibm.com/fgchain/finline-java/conf/docker-net-config.yaml:/etc/conf/net-config.yaml
+      - $FABRIC_NET_CONFIG:/etc/conf/net-config.yaml
     ports:
       - "3000:3000"
     networks:
