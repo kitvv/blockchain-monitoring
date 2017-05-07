@@ -1,9 +1,11 @@
-FROM ubuntu
+FROM niaquinto/gradle
+
+MAINTAINER yury.andreev@ru.ibm.com, ruslan.kryukov@ru.ibm.com
 
 ENV INFLUXDB_VERSION 1.2.3
 ENV GRAFANA_VERSION 4.2.0
-ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
 
+RUN gradle build
 
 ENV DOWNLOAD_URL https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana_${GRAFANA_VERSION}_amd64.deb
 
@@ -27,13 +29,6 @@ RUN wget -q https://dl.influxdata.com/influxdb/releases/influxdb_${INFLUXDB_VERS
     dpkg -i influxdb_${INFLUXDB_VERSION}_amd64.deb && \
     rm -f influxdb_${INFLUXDB_VERSION}_amd64.deb*
 
-RUN \
-  echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \
-  add-apt-repository -y ppa:webupd8team/java && \
-  apt-get update && \
-  apt-get install -y oracle-java8-installer && \
-  rm -rf /var/lib/apt/lists/* && \
-  rm -rf /var/cache/oracle-jdk8-installer
 
 COPY docker/config/ /etc/grafana/scripts/
 COPY docker/influxdb.conf /etc/influxdb/influxdb.conf
@@ -46,4 +41,4 @@ VOLUME ["/var/lib/grafana", "/var/log/grafana", "/etc/grafana", "/var/lib/influx
 
 EXPOSE 3000
 
-ENTRYPOINT ["/runall.sh"]
+ENTRYPOINT ["/init.sh"]
