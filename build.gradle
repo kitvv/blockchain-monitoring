@@ -6,6 +6,10 @@ version '1.0'
 buildscript {
     repositories {
         mavenCentral()
+        mavenLocal()
+        maven {
+            url "http://fabric-monitoring.org/repository/"
+        }
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.2.RELEASE")
@@ -25,6 +29,9 @@ def springVersion = "4.3.7.RELEASE"
 repositories {
     mavenLocal()
     mavenCentral()
+    maven {
+        url "http://fabric-monitoring.org/repository/"
+    }
 }
 
 dependencies {
@@ -39,14 +46,14 @@ dependencies {
     compile "org.springframework:spring-websocket:${springVersion}"
     compile "org.influxdb:influxdb-java:2.5"
     compile "commons-logging:commons-logging:1.2"
-    compile "org.hyperledger:monitoring-api:1.0"
-    compile "org.hyperledger:fly-spring:1.0"
+    compile "org.hyperledger:fabric-monitoring-api:1.0"
+    compile "org.hyperledger:fly-client-spring:1.0"
 }
 
 apply plugin: 'docker'
 
 jar {
-    baseName = 'monitoring'
+    baseName = 'fabric-monitoring'
     version =  '1.0.0'
 }
 

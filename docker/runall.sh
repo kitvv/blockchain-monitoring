@@ -4,4 +4,4 @@ cd /
 
 nohup ./grafana_runner.sh
 nohup ./influx_runner.sh
-java -jar monitoring.jar
+java -jar fabric-monitoring.jar
