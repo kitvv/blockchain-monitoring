@@ -1,16 +1,14 @@
 package org.hyperledger.monitoring;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.protobuf.InvalidProtocolBufferException;
 import org.hyperledger.fabric.client.fly.spring.FlyNet;
+import org.hyperledger.fabric.client.fly.spring.event.EventsProcessor;
+import org.hyperledger.fabric.protos.common.Common;
+import org.hyperledger.fabric.protos.msp.Identities;
+import org.hyperledger.fabric.protos.peer.FabricTransaction;
+import org.hyperledger.fabric.sdk.BlockListener;
 import org.hyperledger.fabric.sdk.Peer;
 import org.hyperledger.monitoring.api.InfluxWriter;
 import org.hyperledger.monitoring.model.MonitoringParams;
@@ -19,6 +17,7 @@ import org.hyperledger.monitoring.model.grafana.dashboard.Panel;
 import org.hyperledger.monitoring.model.grafana.dashboard.Row;
 import org.hyperledger.monitoring.model.grafana.dashboard.Target;
 import org.hyperledger.monitoring.model.grafana.datasource.Datasource;
+import org.influxdb.dto.Point;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +27,18 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import sun.security.x509.X500Name;
+
+import javax.annotation.PostConstruct;
+import javax.security.cert.CertificateException;
+import javax.security.cert.X509Certificate;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 // TODO CHANGE TO @Configuration GrafanaConfiguration, InfluxConfiguration
 @Component
@@ -37,21 +48,30 @@ public class MonitoringConfiguration {
     private static final String DATABASE_NAME = "hyperledger";
     private static final String DASHBOARD_TITLE = "Monitoring Hyperledger";
 
-    @Autowired
-    private InfluxWriter influxWriter;
+    private final InfluxWriter influxWriter;
 
-    @Autowired
-    private MonitoringParams monitoringParams;
+    private final MonitoringParams monitoringParams;
 
-    @Autowired
-    private FlyNet flyNet;
+    private final FlyNet flyNet;
+
+    private final EventsProcessor eventsProcessor;
 
     private ObjectMapper mapper = new ObjectMapper(new JsonFactory());
+
+    @Autowired
+    public MonitoringConfiguration(InfluxWriter influxWriter, MonitoringParams monitoringParams,
+                                   FlyNet flyNet, EventsProcessor eventsProcessor) {
+        this.influxWriter = influxWriter;
+        this.monitoringParams = monitoringParams;
+        this.flyNet = flyNet;
+        this.eventsProcessor = eventsProcessor;
+    }
 
     @PostConstruct
     public void init() {
         initInflux();
         initGrafana();
+        initEventHandlers();
     }
 
     private void initInflux() {
@@ -81,7 +101,7 @@ public class MonitoringConfiguration {
         headers.add("Authorization", "Basic YWRtaW46YWRtaW4=");
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<Datasource> request = new HttpEntity<>(datasource, headers);
-        ;
+
         final String datasourcesURL = monitoringParams.getUrlGrafana() + "/api/datasources";
         restTemplate.postForObject(datasourcesURL, request, String.class);
         log.info("finish init grafana datasources");
@@ -127,6 +147,66 @@ public class MonitoringConfiguration {
         final String dashboardsURL = monitoringParams.getUrlGrafana() + "/api/dashboards/db";
         restTemplate.postForObject(dashboardsURL, request, String.class);
         log.info("finish init grafana dashboards");
+    }
+
+    private void initEventHandlers() {
+        BlockListener metricsEventListener = blockEvent -> {
+            List<FabricTransaction.TxValidationCode> resultValidationList = blockEvent.getTransactionEvents().parallelStream()
+                    .map(transactionEvent -> FabricTransaction.TxValidationCode.forNumber(transactionEvent.validationCode()))
+                    .collect(Collectors.toList());
+
+            List<String> endorsementsList;
+            try {
+                endorsementsList = FabricTransaction.ChaincodeActionPayload.parseFrom(FabricTransaction.Transaction.parseFrom(Common.Payload.parseFrom(
+                        Common.Envelope.parseFrom(blockEvent.getBlock().getData().getData(0)).getPayload()).getData())
+                        .getActions(0).getPayload()).getAction().getEndorsementsList().stream().map(endorsement -> {
+                    try {
+                        return Identities.SerializedIdentity.parseFrom(endorsement.getEndorser());
+                    } catch (InvalidProtocolBufferException e) {
+                        e.printStackTrace();
+                        return null;
+                    }
+                }).filter(Objects::nonNull)
+                        .map(serializedIdentity -> {
+                            final X509Certificate certificate;
+                            String commonName = "";
+                            try {
+                                certificate = X509Certificate.getInstance(serializedIdentity.getIdBytes().toByteArray());
+                                try {
+                                    commonName = ((X500Name) certificate.getSubjectDN()).getCommonName();
+                                    System.out.println("commonName: " + commonName);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            } catch (CertificateException e) {
+                                e.printStackTrace();
+                            }
+                            return String.join(commonName, "(", serializedIdentity.getMspid(), ")");
+                        }).collect(Collectors.toList());
+            } catch (InvalidProtocolBufferException e) {
+                e.printStackTrace();
+                endorsementsList = Collections.emptyList();
+            }
+
+            final String CHANNEL_ID = "CHANNEL_ID";
+            final String TRANSACTION_ID = "TRANSACTION_ID";
+            final String EVENTHUB_NAME = "EVENTHUB_NAME";
+            final String EVENTHUB_URL = "EVENTHUB_URL";
+            final String VALIDATION_RESULT = "VALIDATION_RESULT";
+            final String ENDORSEMENTS = "ENDORSEMENTS";
+
+            Point point = Point.measurement("blockEvent")
+                    .tag(CHANNEL_ID, blockEvent.getChannelID())
+                    .addField(EVENTHUB_NAME, blockEvent.getEventHub().getName())
+                    .addField(EVENTHUB_URL, blockEvent.getEventHub().getUrl())
+                    .addField(TRANSACTION_ID, blockEvent.getTransactionEvents().get(0).getTransactionID())
+                    .addField(VALIDATION_RESULT, resultValidationList.toString())
+                    .addField(ENDORSEMENTS, endorsementsList.toString())
+                    .build();
+            influxWriter.write(point);
+        };
+
+        eventsProcessor.addListener("metrics", metricsEventListener);
     }
 
     private void fillStatusRow(Row row, List<Peer> allPeers) throws CloneNotSupportedException {
