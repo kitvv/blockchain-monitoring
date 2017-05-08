@@ -1,0 +1,30 @@
+organisations:
+- name: 'organisation-01'
+  ca:
+    name: 'ca-organisation-01'
+    address: 'http://localhost:7054'
+  enroll:
+    login: 'admin-organisation-01'
+    pass: 'organisation-01'
+    msp: 'organisation-01'
+  peers:
+    - name: 'peer-organisation-01'
+      address: 'grpc://localhost:5051'
+
+    - name: 'peer-organisation-01-02'
+      address: 'grpc://localhost:6051'
+
+    - name: 'peer-organisation-01-03'
+      address: 'grpc://localhost:7051'
+
+- name: 'organisation-02'
+  ca:
+    name: 'ca-organisation-01'
+    address: 'http://localhost:7054'
+  enroll:
+    login: 'admin-organisation-02'
+    pass: 'organisation-02'
+    msp: 'organisation-02'
+  peers:
+    - name: 'peer-organisation-02'
+      address: 'grpc://localhost:8051'
