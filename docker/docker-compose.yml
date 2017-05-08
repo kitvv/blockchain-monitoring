@@ -12,5 +12,6 @@ services:
       - $FABRIC_NET_CONFIG:/etc/conf/net-config.yaml
     ports:
       - "3000:3000"
+      - "8086:8086"
     networks:
       - dev_net
