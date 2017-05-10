@@ -7,7 +7,7 @@ networks:
 services:
   monitoring:
     container_name: monitoring
-    image: blockchainmonitoring/blockchain-monitoring:1.0.0
+    image: blockchainmonitoring/blockchain-monitoring:latest
     volumes:
       - $FABRIC_NET_CONFIG:/etc/conf/net-config.yaml
     ports:
