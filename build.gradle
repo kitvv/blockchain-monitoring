@@ -1,5 +1,4 @@
-group 'org.hyperledger'
-version '1.0-SNAPSHOT'
+group 'org.blockchain_monitoring'
 
 version '1.0'
 
@@ -8,7 +7,7 @@ buildscript {
         mavenCentral()
         mavenLocal()
         maven {
-            url "http://fabric-monitoring.org/repository/"
+            url "http://blockchain-monitoring.org/repository/"
         }
     }
     dependencies {
@@ -27,10 +26,10 @@ targetCompatibility = 1.8
 def springVersion = "4.3.7.RELEASE"
 
 repositories {
-    mavenLocal()
+//    mavenLocal()
     mavenCentral()
     maven {
-        url "http://fabric-monitoring.org/repository/"
+        url "http://blockchain-monitoring.org/repository/"
     }
 }
 
@@ -46,19 +45,19 @@ dependencies {
     compile "org.springframework:spring-websocket:${springVersion}"
     compile "org.influxdb:influxdb-java:2.5"
     compile "commons-logging:commons-logging:1.2"
-    compile "org.hyperledger:fabric-monitoring-api:1.0"
-    compile "org.hyperledger:fly-client-spring:1.0"
+    compile "org.blockchain_monitoring:blockchain-monitoring-api:1.0"
+    compile "org.blockchain_monitoring:fly-client-spring:1.0"
 }
 
 apply plugin: 'docker'
 
 jar {
-    baseName = 'fabric-monitoring'
+    baseName = 'blockchain-monitoring'
     version =  '1.0.0'
 }
 
 springBoot {
-    mainClass = "org.hyperledger.monitoring.Application"
+    mainClass = "org.blockchain_monitoring.Application"
 }
 
 docker {
@@ -69,9 +68,4 @@ task buildDocker(type: Docker, dependsOn: build) {
     exposePort 8080
     addFile jar.archivePath, jar.archiveName
     entryPoint(["java", "-jar", jar.archiveName])
-}
-
-bootRun {
-    systemProperty "spring.profiles.active", "local"
-    println "bootRun 'spring.profiles.active:influx,local'"
 }

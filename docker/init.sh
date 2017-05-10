@@ -4,4 +4,4 @@ cd /
 
 ./init_grafana.sh &
 ./init_influx.sh &
-java -jar fabric-monitoring.jar
+java -jar blockchain-monitoring.jar

@@ -35,7 +35,7 @@ COPY docker/config/ /etc/grafana/scripts/
 COPY docker/influxdb.conf /etc/influxdb/influxdb.conf
 COPY docker/init_influx.sh /init_influx.sh
 COPY docker/init_grafana.sh /init_grafana.sh
-RUN mv /sources/build/libs/fabric-monitoring-*.jar /fabric-monitoring.jar
+RUN mv /sources/build/libs/blockchain-monitoring-*.jar /blockchain-monitoring.jar
 COPY docker/init.sh /init.sh
 
 VOLUME ["/var/lib/grafana", "/var/log/grafana", "/etc/grafana", "/var/lib/influxdb", "/etc/conf/net-config.yaml"]
