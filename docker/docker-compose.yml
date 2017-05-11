@@ -14,4 +14,5 @@ services:
       - "3000:3000"
       - "8086:8086"
     networks:
-      - dev_net
+      dev_net:
+        ipv4_address: 172.25.0.135
