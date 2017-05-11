@@ -2,9 +2,9 @@ package org.blockchain_monitoring.config;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.blockchain_monitoring.api.InfluxService;
+import org.blockchain_monitoring.api.InfluxServiceImpl;
 import org.blockchain_monitoring.model.MonitoringParams;
-import org.influxdb.InfluxDB;
-import org.influxdb.InfluxDBFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -18,8 +18,8 @@ public class InfluxDBConfig {
     private MonitoringParams monitoringParams;
 
     @Bean
-    public InfluxDB influxDBFactory() {
-        return InfluxDBFactory.connect(
+    public InfluxService influxDBFactory() {
+        return new InfluxServiceImpl(
                 monitoringParams.getUrlInfluxDB(),
                 monitoringParams.getUsernameInfluxDB(),
                 monitoringParams.getPasswordInfluxDB());

@@ -1,9 +1,5 @@
 package org.blockchain_monitoring.service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.blockchain_monitoring.api.InfluxDestroyer;
 import org.blockchain_monitoring.api.InfluxDestroyerException;
 import org.blockchain_monitoring.api.InfluxSearcher;
@@ -17,6 +13,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 public class MonitoringDB {
@@ -97,10 +98,18 @@ public class MonitoringDB {
      * @return true - exists, false - not found
      */
     private boolean isNotExistsByPeerIdAndStatus(final String peerId, final String status) {
-        final QueryResult query = influxSearcher.query("SELECT status FROM \"" + peerId + "\" WHERE \"" + TAG_STATUS + "\" = '" + status + "'");
-        final List<QueryResult.Result> results = query.getResults();
+        final Optional<QueryResult> queryOptional = influxSearcher
+                .query("SELECT status FROM \"" + peerId + "\" WHERE \"" + TAG_STATUS + "\" = '" + status + "'");
 
-        return results.isEmpty() || (results.size() == 1 && results.get(0).getSeries() == null);
+        if(queryOptional.isPresent()) {
+            QueryResult query = queryOptional.get();
+
+            final List<QueryResult.Result> results = query.getResults();
+
+            return results.isEmpty() || (results.size() == 1 && results.get(0).getSeries() == null);
+        } else {
+            return false;
+        }
     }
 }
 
