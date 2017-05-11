@@ -1,9 +1,5 @@
-
 package org.blockchain_monitoring.model.grafana.dashboard;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -11,48 +7,51 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "cacheTimeout",
-    "colorBackground",
-    "colorValue",
-    "colors",
-    "datasource",
-    "format",
-    "gauge",
-    "id",
-    "interval",
-    "links",
-    "mappingType",
-    "mappingTypes",
-    "maxDataPoints",
-    "nullPointMode",
-    "nullText",
-    "postfix",
-    "postfixFontSize",
-    "prefix",
-    "prefixFontSize",
-    "rangeMaps",
-    "span",
-    "sparkline",
-    "targets",
-    "thresholds",
-    "title",
-    "type",
-    "valueFontSize",
-    "valueMaps",
-    "valueName",
-    "columns",
-    "filterNull",
-    "fontSize",
-    "pageSize",
-    "scroll",
-    "showHeader",
-    "sort",
-    "styles",
-    "transform",
-    "minSpan",
-    "timeFrom"
+        "cacheTimeout",
+        "colorBackground",
+        "colorValue",
+        "colors",
+        "datasource",
+        "format",
+        "gauge",
+        "id",
+        "interval",
+        "links",
+        "mappingType",
+        "mappingTypes",
+        "maxDataPoints",
+        "nullPointMode",
+        "nullText",
+        "postfix",
+        "postfixFontSize",
+        "prefix",
+        "prefixFontSize",
+        "rangeMaps",
+        "span",
+        "sparkline",
+        "targets",
+        "thresholds",
+        "title",
+        "type",
+        "valueFontSize",
+        "valueMaps",
+        "valueName",
+        "decimals",
+        "columns",
+        "filterNull",
+        "fontSize",
+        "pageSize",
+        "scroll",
+        "showHeader",
+        "sort",
+        "styles",
+        "transform"
 })
 public class Panel implements Cloneable {
 
@@ -65,7 +64,7 @@ public class Panel implements Cloneable {
     @JsonProperty("colors")
     private List<String> colors = null;
     @JsonProperty("datasource")
-    private String datasource;
+    private Object datasource;
     @JsonProperty("format")
     private String format;
     @JsonProperty("gauge")
@@ -73,7 +72,7 @@ public class Panel implements Cloneable {
     @JsonProperty("id")
     private Integer id;
     @JsonProperty("interval")
-    private String interval;
+    private Object interval;
     @JsonProperty("links")
     private List<Object> links = null;
     @JsonProperty("mappingType")
@@ -114,6 +113,8 @@ public class Panel implements Cloneable {
     private List<ValueMap> valueMaps = null;
     @JsonProperty("valueName")
     private String valueName;
+    @JsonProperty("decimals")
+    private Object decimals;
     @JsonProperty("columns")
     private List<Object> columns = null;
     @JsonProperty("filterNull")
@@ -132,10 +133,6 @@ public class Panel implements Cloneable {
     private List<Style> styles = null;
     @JsonProperty("transform")
     private String transform;
-    @JsonProperty("minSpan")
-    private Object minSpan;
-    @JsonProperty("timeFrom")
-    private Object timeFrom;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -180,12 +177,12 @@ public class Panel implements Cloneable {
     }
 
     @JsonProperty("datasource")
-    public String getDatasource() {
+    public Object getDatasource() {
         return datasource;
     }
 
     @JsonProperty("datasource")
-    public void setDatasource(String datasource) {
+    public void setDatasource(Object datasource) {
         this.datasource = datasource;
     }
 
@@ -220,12 +217,12 @@ public class Panel implements Cloneable {
     }
 
     @JsonProperty("interval")
-    public String getInterval() {
+    public Object getInterval() {
         return interval;
     }
 
     @JsonProperty("interval")
-    public void setInterval(String interval) {
+    public void setInterval(Object interval) {
         this.interval = interval;
     }
 
@@ -429,6 +426,16 @@ public class Panel implements Cloneable {
         this.valueName = valueName;
     }
 
+    @JsonProperty("decimals")
+    public Object getDecimals() {
+        return decimals;
+    }
+
+    @JsonProperty("decimals")
+    public void setDecimals(Object decimals) {
+        this.decimals = decimals;
+    }
+
     @JsonProperty("columns")
     public List<Object> getColumns() {
         return columns;
@@ -517,26 +524,6 @@ public class Panel implements Cloneable {
     @JsonProperty("transform")
     public void setTransform(String transform) {
         this.transform = transform;
-    }
-
-    @JsonProperty("minSpan")
-    public Object getMinSpan() {
-        return minSpan;
-    }
-
-    @JsonProperty("minSpan")
-    public void setMinSpan(Object minSpan) {
-        this.minSpan = minSpan;
-    }
-
-    @JsonProperty("timeFrom")
-    public Object getTimeFrom() {
-        return timeFrom;
-    }
-
-    @JsonProperty("timeFrom")
-    public void setTimeFrom(Object timeFrom) {
-        this.timeFrom = timeFrom;
     }
 
     @JsonAnyGetter

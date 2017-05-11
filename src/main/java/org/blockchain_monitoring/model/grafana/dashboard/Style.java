@@ -1,9 +1,5 @@
-
 package org.blockchain_monitoring.model.grafana.dashboard;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -11,16 +7,20 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "dateFormat",
-    "pattern",
-    "type",
-    "colorMode",
-    "colors",
-    "decimals",
-    "thresholds",
-    "unit"
+        "dateFormat",
+        "pattern",
+        "type",
+        "colorMode",
+        "colors",
+        "decimals",
+        "thresholds",
+        "unit"
 })
 public class Style {
 
@@ -31,13 +31,13 @@ public class Style {
     @JsonProperty("type")
     private String type;
     @JsonProperty("colorMode")
-    private Object colorMode;
+    private String colorMode;
     @JsonProperty("colors")
     private List<String> colors = null;
     @JsonProperty("decimals")
     private Integer decimals;
     @JsonProperty("thresholds")
-    private List<Object> thresholds = null;
+    private String thresholds;
     @JsonProperty("unit")
     private String unit;
     @JsonIgnore
@@ -74,12 +74,12 @@ public class Style {
     }
 
     @JsonProperty("colorMode")
-    public Object getColorMode() {
+    public String getColorMode() {
         return colorMode;
     }
 
     @JsonProperty("colorMode")
-    public void setColorMode(Object colorMode) {
+    public void setColorMode(String colorMode) {
         this.colorMode = colorMode;
     }
 
@@ -104,12 +104,12 @@ public class Style {
     }
 
     @JsonProperty("thresholds")
-    public List<Object> getThresholds() {
+    public String getThresholds() {
         return thresholds;
     }
 
     @JsonProperty("thresholds")
-    public void setThresholds(List<Object> thresholds) {
+    public void setThresholds(String thresholds) {
         this.thresholds = thresholds;
     }
 

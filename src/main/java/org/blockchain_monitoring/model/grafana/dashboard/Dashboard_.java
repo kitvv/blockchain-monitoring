@@ -1,9 +1,5 @@
-
 package org.blockchain_monitoring.model.grafana.dashboard;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -11,31 +7,34 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "__inputs",
-    "__requires",
-    "annotations",
-    "editMode",
-    "editable",
-    "gnetId",
-    "graphTooltip",
-    "hideControls",
-    "id",
-    "links",
-    "refresh",
-    "rows",
-    "schemaVersion",
-    "style",
-    "tags",
-    "templating",
-    "time",
-    "timepicker",
-    "timezone",
-    "title",
-    "version"
+        "__inputs",
+        "__requires",
+        "annotations",
+        "editable",
+        "gnetId",
+        "graphTooltip",
+        "hideControls",
+        "id",
+        "links",
+        "refresh",
+        "rows",
+        "schemaVersion",
+        "style",
+        "tags",
+        "templating",
+        "time",
+        "timepicker",
+        "timezone",
+        "title",
+        "version"
 })
-public class DashboardInfo {
+public class Dashboard_ {
 
     @JsonProperty("__inputs")
     private List<Input> inputs = null;
@@ -43,8 +42,6 @@ public class DashboardInfo {
     private List<Require> requires = null;
     @JsonProperty("annotations")
     private Annotations annotations;
-    @JsonProperty("editMode")
-    private Boolean editMode;
     @JsonProperty("editable")
     private Boolean editable;
     @JsonProperty("gnetId")
@@ -110,16 +107,6 @@ public class DashboardInfo {
     @JsonProperty("annotations")
     public void setAnnotations(Annotations annotations) {
         this.annotations = annotations;
-    }
-
-    @JsonProperty("editMode")
-    public Boolean getEditMode() {
-        return editMode;
-    }
-
-    @JsonProperty("editMode")
-    public void setEditMode(Boolean editMode) {
-        this.editMode = editMode;
     }
 
     @JsonProperty("editable")

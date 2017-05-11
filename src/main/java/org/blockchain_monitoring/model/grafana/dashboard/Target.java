@@ -1,9 +1,5 @@
-
 package org.blockchain_monitoring.model.grafana.dashboard;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -11,27 +7,30 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "dsType",
-    "groupBy",
-    "hide",
-    "measurement",
-    "policy",
-    "query",
-    "rawQuery",
-    "refId",
-    "resultFormat",
-    "select",
-    "tags",
-    "alias"
+        "dsType",
+        "groupBy",
+        "hide",
+        "measurement",
+        "policy",
+        "query",
+        "rawQuery",
+        "refId",
+        "resultFormat",
+        "select",
+        "tags"
 })
 public class Target implements Cloneable {
 
     @JsonProperty("dsType")
     private String dsType;
     @JsonProperty("groupBy")
-    private List<GroupBy> groupBy = null;
+    private List<Object> groupBy = null;
     @JsonProperty("hide")
     private Boolean hide;
     @JsonProperty("measurement")
@@ -50,8 +49,6 @@ public class Target implements Cloneable {
     private List<List<Select>> select = null;
     @JsonProperty("tags")
     private List<Tag> tags = null;
-    @JsonProperty("alias")
-    private String alias;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -66,12 +63,12 @@ public class Target implements Cloneable {
     }
 
     @JsonProperty("groupBy")
-    public List<GroupBy> getGroupBy() {
+    public List<Object> getGroupBy() {
         return groupBy;
     }
 
     @JsonProperty("groupBy")
-    public void setGroupBy(List<GroupBy> groupBy) {
+    public void setGroupBy(List<Object> groupBy) {
         this.groupBy = groupBy;
     }
 
@@ -163,16 +160,6 @@ public class Target implements Cloneable {
     @JsonProperty("tags")
     public void setTags(List<Tag> tags) {
         this.tags = tags;
-    }
-
-    @JsonProperty("alias")
-    public String getAlias() {
-        return alias;
-    }
-
-    @JsonProperty("alias")
-    public void setAlias(String alias) {
-        this.alias = alias;
     }
 
     @JsonAnyGetter
