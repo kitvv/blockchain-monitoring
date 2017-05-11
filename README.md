@@ -18,7 +18,7 @@ Add user and db to influxdb
 ### Down
         $ ./down
 
-### Advanced
+## Advanced
 Please checkout project:
 
 Use this docker-compose.yml to up "blockchain-monitoring" https://github.com/blockchain-monitoring/blockchain-monitoring/blob/master/docker/docker-compose.yml
