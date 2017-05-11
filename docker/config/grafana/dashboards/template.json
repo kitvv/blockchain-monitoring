@@ -33,8 +33,7 @@
     "annotations": {
       "list": []
     },
-    "editMode": false,
-    "editable": false,
+    "editable": true,
     "gnetId": null,
     "graphTooltip": 0,
     "hideControls": false,
@@ -324,7 +323,7 @@
                 "groupBy": [],
                 "measurement": "peer-01",
                 "policy": "default",
-                "query": "SELECT \"chaincode\" FROM \"peer-01\" WHERE \"TAG_STATUS\" = 'UP'",
+                "query": "SELECT \"chaincode\" FROM \"peer-01\"",
                 "rawQuery": true,
                 "refId": "A",
                 "resultFormat": "time_series",
@@ -402,150 +401,19 @@
             ],
             "targets": [
               {
-                "alias": "",
                 "dsType": "influxdb",
                 "groupBy": [],
                 "measurement": "blockEvent",
                 "policy": "autogen",
                 "query": "SELECT * FROM \"autogen\".\"blockEvent\"",
-                "rawQuery": false,
-                "refId": "A",
-                "resultFormat": "table",
-                "select": [
-                  [
-                    {
-                      "params": [
-                        "ENDORSEMENTS"
-                      ],
-                      "type": "field"
-                    }
-                  ],
-                  [
-                    {
-                      "params": [
-                        "TRANSACTION_ID"
-                      ],
-                      "type": "field"
-                    }
-                  ],
-                  [
-                    {
-                      "params": [
-                        "VALIDATION_RESULT"
-                      ],
-                      "type": "field"
-                    }
-                  ]
-                ],
-                "tags": []
-              }
-            ],
-            "title": "Event",
-            "transform": "table",
-            "type": "table"
-          }
-        ],
-        "repeat": null,
-        "repeatIteration": null,
-        "repeatRowId": null,
-        "showTitle": false,
-        "title": "Dashboard Row",
-        "titleSize": "h6"
-      },
-      {
-        "collapse": false,
-        "height": 250,
-        "panels": [
-          {
-            "columns": [],
-            "datasource": "influxdb",
-            "filterNull": false,
-            "fontSize": "100%",
-            "id": 25,
-            "interval": "",
-            "links": [],
-            "minSpan": null,
-            "pageSize": null,
-            "scroll": true,
-            "showHeader": true,
-            "sort": {
-              "col": 0,
-              "desc": true
-            },
-            "span": 12,
-            "styles": [
-              {
-                "colorMode": "row",
-                "colors": [
-                  "rgba(245, 54, 54, 0.9)",
-                  "rgba(237, 129, 40, 0.89)",
-                  "rgba(50, 172, 45, 0.97)"
-                ],
-                "decimals": 0,
-                "pattern": "IS_VALID",
-                "thresholds": "0.5,0.5",
-                "type": "number",
-                "unit": "none"
-              },
-              {
-                "colorMode": null,
-                "colors": [
-                  "rgba(245, 54, 54, 0.9)",
-                  "rgba(237, 129, 40, 0.89)",
-                  "rgba(50, 172, 45, 0.97)"
-                ],
-                "dateFormat": "MM/DD/YY h:mm:ss a",
-                "decimals": 2,
-                "pattern": "Time",
-                "thresholds": [],
-                "type": "date",
-                "unit": "short"
-              }
-            ],
-            "targets": [
-              {
-                "alias": "",
-                "dsType": "influxdb",
-                "groupBy": [
-                  {
-                    "params": [
-                      "TRANSACTION_ID"
-                    ],
-                    "type": "field"
-                  }
-                ],
-                "hide": false,
-                "measurement": "blockEvent",
-                "policy": "autogen",
-                "query": "SELECT \"TRANSACTION_ID\", \"ENDORSEMENTS\", \"VALIDATION_RESULT\" FROM \"autogen\".\"blockEvent\"",
                 "rawQuery": true,
                 "refId": "A",
-                "resultFormat": "table",
+                "resultFormat": "time_series",
                 "select": [
                   [
                     {
                       "params": [
-                        "TRANSACTION_ID"
-                      ],
-                      "type": "field"
-                    },
-                    {
-                      "params": [],
-                      "type": "distinct"
-                    }
-                  ],
-                  [
-                    {
-                      "params": [
-                        "ENDORSEMENTS"
-                      ],
-                      "type": "field"
-                    }
-                  ],
-                  [
-                    {
-                      "params": [
-                        "VALIDATION_RESULT"
+                        "IS_VALID"
                       ],
                       "type": "field"
                     }
@@ -554,9 +422,8 @@
                 "tags": []
               }
             ],
-            "timeFrom": null,
             "title": "Event",
-            "transform": "table",
+            "transform": "timeseries_to_columns",
             "type": "table"
           }
         ],
@@ -605,7 +472,7 @@
       ]
     },
     "timezone": "browser",
-    "title": "Monitoring Hyperledger",
+    "title": "Monitoring",
     "version": 7
   }
 }
