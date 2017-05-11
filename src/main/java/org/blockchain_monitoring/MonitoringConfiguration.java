@@ -114,11 +114,11 @@ public class MonitoringConfiguration {
         final Dashboard dashboard = mapper.readValue(datasourcesTemplate, Dashboard.class);
 
         // TODO динамичая загрузка борды из flyNet
-        dashboard.getDashboard().setTitle(DASHBOARD_TITLE);
+        dashboard.getDashboardInfo().setTitle(DASHBOARD_TITLE);
         // Individual
-        final Row statusRow = dashboard.getDashboard().getRows().get(0);
-        final Row channelRow = dashboard.getDashboard().getRows().get(1);
-        final Row chaincodeRow = dashboard.getDashboard().getRows().get(2);
+        final Row statusRow = dashboard.getDashboardInfo().getRows().get(0);
+        final Row channelRow = dashboard.getDashboardInfo().getRows().get(1);
+        final Row chaincodeRow = dashboard.getDashboardInfo().getRows().get(2);
 
         final List<Peer> allPeers = new ArrayList<>();
         flyNet.getOrganisations().forEach(organisation -> {
