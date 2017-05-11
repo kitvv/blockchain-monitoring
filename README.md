@@ -10,6 +10,15 @@ Add user and db to influxdb
 
 ## How to use
 
+### Start
+        $ ./start /opt/path/to/file/template_network-config.yaml
+
+   '/opt/path/to/file/template_network-config.yaml' - path to fabric_config_file, for example https://github.com/blockchain-monitoring/blockchain-monitoring/blob/master/docker/template_network-config.yaml)
+
+### Down
+        $ ./down
+
+### Advanced
 Please checkout project:
 
 Use this docker-compose.yml to up "blockchain-monitoring" https://github.com/blockchain-monitoring/blockchain-monitoring/blob/master/docker/docker-compose.yml
