@@ -82,6 +82,14 @@ public class MonitoringConfiguration {
     private void initGrafana() {
         try {
             initDatasources();
+        } catch (HttpClientErrorException e) {
+            final String responseBodyAsString = e.getResponseBodyAsString();
+            log.error(responseBodyAsString);
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+
+        try {
             initDashboards();
         } catch (HttpClientErrorException e) {
             final String responseBodyAsString = e.getResponseBodyAsString();
@@ -196,11 +204,13 @@ public class MonitoringConfiguration {
             final String VALIDATION_RESULT = "VALIDATION_RESULT";
             final String ENDORSEMENTS = "ENDORSEMENTS";
 
+            final String transactionID = blockEvent.getTransactionEvents().get(0).getTransactionID();
             Point point = Point.measurement("blockEvent")
                     .tag(CHANNEL_ID, blockEvent.getChannelID())
+                    .tag(TRANSACTION_ID, transactionID)
                     .addField(EVENTHUB_NAME, blockEvent.getEventHub().getName())
                     .addField(EVENTHUB_URL, blockEvent.getEventHub().getUrl())
-                    .addField(TRANSACTION_ID, blockEvent.getTransactionEvents().get(0).getTransactionID())
+                    .addField(TRANSACTION_ID, transactionID)
                     .addField(VALIDATION_RESULT, resultValidationList.toString())
                     .addField(ENDORSEMENTS, endorsementsList.toString())
                     .build();
