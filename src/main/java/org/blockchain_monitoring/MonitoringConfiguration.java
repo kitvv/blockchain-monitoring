@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
@@ -15,6 +16,7 @@ import javax.security.cert.X509Certificate;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.protobuf.InvalidProtocolBufferException;
+import org.blockchain_monitoring.api.InfluxSearcher;
 import org.blockchain_monitoring.api.InfluxWriter;
 import org.blockchain_monitoring.fly_client_spring.FlyNet;
 import org.blockchain_monitoring.fly_client_spring.event.EventsProcessor;
@@ -30,6 +32,7 @@ import org.hyperledger.fabric.protos.peer.FabricTransaction;
 import org.hyperledger.fabric.sdk.BlockListener;
 import org.hyperledger.fabric.sdk.Peer;
 import org.influxdb.dto.Point;
+import org.influxdb.dto.QueryResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,8 +51,17 @@ public class MonitoringConfiguration {
     private static final Logger log = LoggerFactory.getLogger(MonitoringConfiguration.class);
     private static final String DATABASE_NAME = "hyperledger";
     private static final String DASHBOARD_TITLE = "Monitoring Hyperledger";
+    private static final String CHANNEL_ID = "CHANNEL_ID";
+    private static final String TRANSACTION_ID = "TRANSACTION_ID";
+//    private static final String EVENTHUB_NAME = "EVENTHUB_NAME";
+//    private static final String EVENTHUB_URL = "EVENTHUB_URL";
+    private static final String VALIDATION_RESULT = "VALIDATION_RESULT";
+    private static final String ENDORSEMENTS = "ENDORSEMENTS";
+    private static final String BLOCK_EVENT_MEASUREMENT = "blockEvent";
 
     private final InfluxWriter influxWriter;
+
+    private final InfluxSearcher influxSearcher;
 
     private final MonitoringParams monitoringParams;
 
@@ -60,8 +72,9 @@ public class MonitoringConfiguration {
     private ObjectMapper mapper = new ObjectMapper(new JsonFactory());
 
     @Autowired
-    public MonitoringConfiguration(InfluxWriter influxWriter, MonitoringParams monitoringParams,
+    public MonitoringConfiguration(InfluxWriter influxWriter, InfluxSearcher influxSearcher, MonitoringParams monitoringParams,
                                    FlyNet flyNet, EventsProcessor eventsProcessor) {
+        this.influxSearcher = influxSearcher;
         this.influxWriter = influxWriter;
         this.monitoringParams = monitoringParams;
         this.flyNet = flyNet;
@@ -160,9 +173,9 @@ public class MonitoringConfiguration {
 
     private void initEventHandlers() {
         BlockListener metricsEventListener = blockEvent -> {
-            List<FabricTransaction.TxValidationCode> resultValidationList = blockEvent.getTransactionEvents().parallelStream()
+            final String validationResult = blockEvent.getTransactionEvents().parallelStream()
                     .map(transactionEvent -> FabricTransaction.TxValidationCode.forNumber(transactionEvent.validationCode()))
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toList()).toString();
 
             List<String> endorsementsList;
             try {
@@ -197,24 +210,23 @@ public class MonitoringConfiguration {
                 endorsementsList = Collections.emptyList();
             }
 
-            final String CHANNEL_ID = "CHANNEL_ID";
-            final String TRANSACTION_ID = "TRANSACTION_ID";
-            final String EVENTHUB_NAME = "EVENTHUB_NAME";
-            final String EVENTHUB_URL = "EVENTHUB_URL";
-            final String VALIDATION_RESULT = "VALIDATION_RESULT";
-            final String ENDORSEMENTS = "ENDORSEMENTS";
-
             final String transactionID = blockEvent.getTransactionEvents().get(0).getTransactionID();
-            Point point = Point.measurement("blockEvent")
-                    .tag(CHANNEL_ID, blockEvent.getChannelID())
-                    .tag(TRANSACTION_ID, transactionID)
-                    .addField(EVENTHUB_NAME, blockEvent.getEventHub().getName())
-                    .addField(EVENTHUB_URL, blockEvent.getEventHub().getUrl())
-                    .addField(TRANSACTION_ID, transactionID)
-                    .addField(VALIDATION_RESULT, resultValidationList.toString())
-                    .addField(ENDORSEMENTS, endorsementsList.toString())
-                    .build();
-            influxWriter.write(point);
+
+            final Optional<QueryResult> queryOptional = influxSearcher
+                    .query("SELECT status FROM \"" + BLOCK_EVENT_MEASUREMENT + "\" WHERE \"" + TRANSACTION_ID + "\" = '" + transactionID + "' AND \"" + VALIDATION_RESULT + "\" = '" + validationResult + "'");
+
+            if(!queryOptional.isPresent()) {
+                Point point = Point.measurement(BLOCK_EVENT_MEASUREMENT)
+                        .tag(CHANNEL_ID, blockEvent.getChannelID())
+                        .tag(TRANSACTION_ID, transactionID)
+//                    .addField(EVENTHUB_NAME, blockEvent.getEventHub().getName())
+//                    .addField(EVENTHUB_URL, blockEvent.getEventHub().getUrl())
+                        .addField(TRANSACTION_ID, transactionID)
+                        .addField(VALIDATION_RESULT, validationResult)
+                        .addField(ENDORSEMENTS, endorsementsList.toString())
+                        .build();
+                influxWriter.write(point);
+            }
         };
 
         eventsProcessor.addListener("metrics", metricsEventListener);
