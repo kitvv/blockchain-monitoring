@@ -1,6 +1,8 @@
 # blockchain-monitoring
 http://blockchain-monitoring.org
 
+![blockchain-monitoring-architecture](http://blockchain-monitoring.org/images/architecture.png)
+
 ## About
 Monitoring for blockchain "fabric" network.
 
