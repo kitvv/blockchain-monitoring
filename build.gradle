@@ -41,8 +41,8 @@ dependencies {
     compile "org.springframework:spring-websocket:${springVersion}"
     compile "org.influxdb:influxdb-java:2.5"
     compile "commons-logging:commons-logging:1.2"
-    compile "org.blockchain_monitoring:blockchain-monitoring-api:1.0"
-    compile "org.blockchain_monitoring:fly-client-spring:1.0"
+    compile "org.blockchain_monitoring:blockchain-monitoring-api:1.1-SNAPSHOT"
+    compile "org.blockchain_monitoring:fly-client-spring:1.1-SNAPSHOT"
 }
 
 apply plugin: 'docker'
