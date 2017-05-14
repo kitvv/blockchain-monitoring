@@ -1,13 +1,10 @@
 group 'org.blockchain_monitoring'
-
-version '1.0'
+version '1.1-SNAPSHOT'
 
 buildscript {
     repositories {
-        mavenCentral()
-        mavenLocal()
         maven {
-            url "http://blockchain-monitoring.org/repository/"
+            url "${nexusUrl}/content/groups/public/"
         }
     }
     dependencies {
@@ -17,6 +14,7 @@ buildscript {
 }
 
 apply plugin: 'java'
+apply plugin: 'maven'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
@@ -26,16 +24,14 @@ targetCompatibility = 1.8
 def springVersion = "4.3.7.RELEASE"
 
 repositories {
-//    mavenLocal()
-    mavenCentral()
     maven {
-        url "http://blockchain-monitoring.org/repository/"
+        url "${nexusUrl}/content/groups/public/"
     }
 }
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter")
-    compile "org.springframework:spring-context:${springVersion}"
+    compile "org.springframwework:spring-context:${springVersion}"
     compile "org.springframework:spring-webmvc:${springVersion}"
     compile "org.springframework:spring-web:${springVersion}"
     compile "org.springframework:spring-core:${springVersion}"
@@ -69,3 +65,19 @@ task buildDocker(type: Docker, dependsOn: build) {
     addFile jar.archivePath, jar.archiveName
     entryPoint(["java", "-jar", jar.archiveName])
 }
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(
+                    url: "${nexusUrl}/content/repositories/releases") {
+                authentication(userName: nexusUsername, password: nexusPassword)
+            }
+            snapshotRepository(
+                    url: "${nexusUrl}/content/repositories/snapshots") {
+                authentication(userName: nexusUsername, password: nexusPassword)
+            }
+        }
+    }
+}
+
