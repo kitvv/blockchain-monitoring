@@ -1,4 +1,6 @@
 # blockchain-monitoring
+**Continuous integration:** [![Build Status](https://travis-ci.org/blockchain-monitoring/blockchain-monitoring.svg?branch=master)](https://travis-ci.org/blockchain-monitoring/blockchain-monitoring)
+
 http://blockchain-monitoring.org
 
 ![blockchain-monitoring-architecture](http://blockchain-monitoring.org/images/architecture.png)
