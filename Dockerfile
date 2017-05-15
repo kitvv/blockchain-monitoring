@@ -28,6 +28,7 @@ RUN wget -q https://dl.influxdata.com/influxdb/releases/influxdb_${INFLUXDB_VERS
 
 COPY src/ /sources/src/
 COPY build.gradle /sources/
+COPY gradle.properties /sources/
 COPY settings.gradle /sources/
 
 RUN gradle --no-daemon clean build -p /sources/
