@@ -403,9 +403,9 @@
               {
                 "dsType": "influxdb",
                 "groupBy": [],
-                "measurement": "blockEvent",
+                "measurement": "commonBlockEvent",
                 "policy": "autogen",
-                "query": "SELECT * FROM \"autogen\".\"blockEvent\"",
+                "query": "SELECT * FROM \"autogen\".\"commonBlockEvent\"",
                 "rawQuery": true,
                 "refId": "A",
                 "resultFormat": "time_series",
