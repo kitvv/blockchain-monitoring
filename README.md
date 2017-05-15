@@ -1,52 +1,127 @@
-# blockchain-monitoring
-**Continuous integration:** [![Build Status](https://travis-ci.org/blockchain-monitoring/blockchain-monitoring.svg?branch=master)](https://travis-ci.org/blockchain-monitoring/blockchain-monitoring)
+[Blockchain Monitoring Tool](http://blockchain-monitoring.org)
+================
 
-http://blockchain-monitoring.org
+BMTool is an open source project designed for Hyperledger Fabric. 
 
-![blockchain-monitoring-architecture](http://blockchain-monitoring.org/images/architecture.png)
+It provides convient and demonstrative way to represent information
+about blockchain fabric network activities. 
+# About
+Project consists of Grafana, Influx DB and BMTool as own, which collects and aggregates telemetry from Fabric.
+## Requirements
+You need Docker and maybe Docker-compose to run BMTool and open 3000 and 8086 ports. That's all.
+## Installation
+You can download docker image with command: `docker pull blockchainmonitoring/blockchain-monitoring:latest`
 
-## About
-Monitoring for blockchain "fabric" network.
+With docker-compose create docker-compose.yaml file:
+```yaml
+version: '2'
 
-Load and start Docker images to run Grafana + InfluexDB for monitoring status network.
-Add dashboards and datasources to grafana.		
-Add user and db to influxdb
+services:
+  monitoring:
+    container_name: blockchain-monitoring
+    image: blockchainmonitoring/blockchain-monitoring:latest
+    volumes:
+      - $FABRIC_NET_CONFIG:/etc/conf/net-config.yaml
+    ports:
+      - "3000:3000"
+      - "8086:8086"
+```
+and net-config.yaml file:
+```yaml
+organisations:
+- name: 'foo'
+  ca:
+    name: 'ca-foo'
+    address: 'http://172.25.0.177:7054'
+  enroll:
+    login: 'fadmin'
+    pass: 'foo'
+    msp: 'foo'
+  peers:
+    - name: 'peer-foo'
+      address: 'grpc://172.25.0.104:7051'
 
-## How to use
+    - name: 'peer-foo-02'
+      address: 'grpc://172.25.0.105:7051'
 
-### Start
-        $ ./start /opt/path/to/file/template_network-config.yaml
+    - name: 'peer-foo-03'
+      address: 'grpc://172.25.0.106:7051'
 
-   '/opt/path/to/file/template_network-config.yaml' - path to fabric_config_file, for example https://github.com/blockchain-monitoring/blockchain-monitoring/blob/master/docker/template_network-config.yaml)
+- name: 'bar'
+  ca:
+    name: 'ca-foo'
+    address: 'http://ca-foo:7054'
+  enroll:
+    login: 'badmin'
+    pass: 'bar'
+    msp: 'bar'
+  peers:
+    - name: 'peer-bar'
+      address: 'grpc://172.25.0.107:7051'
 
-### Down
-        $ ./down
+channels:
+- name: 'pubfoochan'
+  msp:
+  - 'foo'
+  - 'bar'
 
-## Advanced
-Please checkout project:
+  endorsers:
+  - name: 'peer-foo'
+    msp: 'foo'
+    address: 'grpc://172.25.0.104:7051'
 
-Use this docker-compose.yml to up "blockchain-monitoring" https://github.com/blockchain-monitoring/blockchain-monitoring/blob/master/docker/docker-compose.yml
+  - name: 'peer-foo-02'
+    msp: 'foo'
+    address: 'grpc://172.25.0.105:7051'
 
-### Pay attention! in docker-compose we use networks "dev_net"
-    
-    networks:
-      dev_net:
-      external: true
+  - name: 'peer-foo-03'
+    msp: 'foo'
+    address: 'grpc://172.25.0.106:7051'
 
-    services:
-      monitoring:
-        networks:
-            - dev_net
+  - name: 'peer-bar'
+    msp: 'bar'
+    address: 'grpc://172.25.0.107:7051'
 
-in docker-compose we will pull our stable project https://store.docker.com/community/images/blockchainmonitoring/blockchain-monitoring 
+  orderers:
+  - name: 'foo-orderer'
+    msp:
+    - 'foo'
+    - 'bar'
+    address: 'grpc://172.25.0.102:7050'
 
-$FABRIC_NET_CONFIG is path to your network config file. (for example network config file: https://github.com/blockchain-monitoring/blockchain-monitoring/blob/master/docker/template_network-config.yaml)
+  events:
+  - name: 'ev-peer-foo'
+    msp: 'foo'
+    address: 'grpc://172.25.0.104:7053'
 
-In template_network-config.yaml please change "ip" and "name" on your network.
+  - name: 'ev-peer-foo-02'
+    msp: 'foo'
+    address: 'grpc://172.25.0.105:7053'
 
+  - name: 'ev-peer-foo-03'
+    msp: 'foo'
+    address: 'grpc://172.25.0.106:7053'
 
-    export FABRIC_NET_CONFIG=/opt/path/to/file/template_network-config.yaml
-    docker-compose up
+  - name: 'ev-peer-bar'
+    msp: 'bar'
+    address: 'grpc://172.25.0.107:7053'
 
-after run docker we need to go http://localhost:3000 (login: admin, password: admin)
-we can see our monitoring dashboard for your network.
+  chaincodes:
+  - name: 'prettycode'
+    path: 'github.xyz/thebestcode/prettycode'
+    version: '1.0'
+```
+
+This file describes fabric network configuration and contains two main sections: organization and channels.
+Orgranization section provides information about fabric-CA, fabric-peers name and address, MSP-ID. 
+Next section channels show us which peers are connected to channel, their addresses, names and msp-id.
+
+Also you need to set environment variable $FABRIC_NET_CONFIG for net-config.yaml file (**it must be absolute path**) and after that just write:
+```bash
+docker-compose up
+```
+If monitoring seccessully started you can access to it by visiting http://localhost:3000 admin:admin
+
+## Use monitoring in your code
+BMTool provides you simple API, written in Java. 
+Visit [link](https://github.com/blockchain-monitoring/blockchain-monitoring-api) for more information.
