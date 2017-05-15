@@ -27,12 +27,11 @@ repositories {
     maven {
         url "${nexusUrl}/content/groups/public/"
     }
-    mavenCentral()
 }
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter")
-    compile "org.springframwework:spring-context:${springVersion}"
+    compile "org.springframework:spring-context:${springVersion}"
     compile "org.springframework:spring-webmvc:${springVersion}"
     compile "org.springframework:spring-web:${springVersion}"
     compile "org.springframework:spring-core:${springVersion}"
