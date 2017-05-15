@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
@@ -32,7 +31,6 @@ import org.hyperledger.fabric.protos.peer.FabricTransaction;
 import org.hyperledger.fabric.sdk.BlockListener;
 import org.hyperledger.fabric.sdk.Peer;
 import org.influxdb.dto.Point;
-import org.influxdb.dto.QueryResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,8 +51,8 @@ public class MonitoringConfiguration {
     private static final String DASHBOARD_TITLE = "Monitoring Hyperledger";
     private static final String CHANNEL_ID = "CHANNEL_ID";
     private static final String TRANSACTION_ID = "TRANSACTION_ID";
-//    private static final String EVENTHUB_NAME = "EVENTHUB_NAME";
-//    private static final String EVENTHUB_URL = "EVENTHUB_URL";
+    private static final String EVENTHUB_NAME = "EVENTHUB_NAME";
+    private static final String EVENTHUB_URL = "EVENTHUB_URL";
     private static final String VALIDATION_RESULT = "VALIDATION_RESULT";
     private static final String ENDORSEMENTS = "ENDORSEMENTS";
     private static final String BLOCK_EVENT_MEASUREMENT = "blockEvent";
@@ -173,9 +171,9 @@ public class MonitoringConfiguration {
 
     private void initEventHandlers() {
         BlockListener metricsEventListener = blockEvent -> {
-            final String validationResult = blockEvent.getTransactionEvents().parallelStream()
+            List<FabricTransaction.TxValidationCode> resultValidationList = blockEvent.getTransactionEvents().parallelStream()
                     .map(transactionEvent -> FabricTransaction.TxValidationCode.forNumber(transactionEvent.validationCode()))
-                    .collect(Collectors.toList()).toString();
+                    .collect(Collectors.toList());
 
             List<String> endorsementsList;
             try {
@@ -212,21 +210,21 @@ public class MonitoringConfiguration {
 
             final String transactionID = blockEvent.getTransactionEvents().get(0).getTransactionID();
 
-            final Optional<QueryResult> queryOptional = influxSearcher
-                    .query("SELECT status FROM \"" + BLOCK_EVENT_MEASUREMENT + "\" WHERE \"" + TRANSACTION_ID + "\" = '" + transactionID + "' AND \"" + VALIDATION_RESULT + "\" = '" + validationResult + "'");
+//            final Optional<QueryResult> queryOptional = influxSearcher
+//                    .query("SELECT status FROM \"" + BLOCK_EVENT_MEASUREMENT + "\" WHERE \"" + TRANSACTION_ID + "\" = '" + transactionID + "' AND \"" + VALIDATION_RESULT + "\" = '" + validationResult + "'");
+//
+//            if(!queryOptional.isPresent()) {
 
-            if(!queryOptional.isPresent()) {
-                Point point = Point.measurement(BLOCK_EVENT_MEASUREMENT)
-                        .tag(CHANNEL_ID, blockEvent.getChannelID())
-                        .tag(TRANSACTION_ID, transactionID)
-//                    .addField(EVENTHUB_NAME, blockEvent.getEventHub().getName())
-//                    .addField(EVENTHUB_URL, blockEvent.getEventHub().getUrl())
-                        .addField(TRANSACTION_ID, transactionID)
-                        .addField(VALIDATION_RESULT, validationResult)
-                        .addField(ENDORSEMENTS, endorsementsList.toString())
-                        .build();
-                influxWriter.write(point);
-            }
+            Point point = Point.measurement("blockEvent")
+                    .tag(CHANNEL_ID, blockEvent.getChannelID())
+                    .tag(TRANSACTION_ID, transactionID)
+                    .addField(EVENTHUB_NAME, blockEvent.getEventHub().getName())
+                    .addField(EVENTHUB_URL, blockEvent.getEventHub().getUrl())
+                    .addField(TRANSACTION_ID, transactionID)
+                    .addField(VALIDATION_RESULT, resultValidationList.toString())
+                    .addField(ENDORSEMENTS, endorsementsList.toString())
+                    .build();
+            influxWriter.write(point);
         };
 
         eventsProcessor.addListener("metrics", metricsEventListener);
