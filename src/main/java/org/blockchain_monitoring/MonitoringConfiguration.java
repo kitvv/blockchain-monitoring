@@ -28,6 +28,7 @@ import org.blockchain_monitoring.model.grafana.datasource.Datasource;
 import org.hyperledger.fabric.protos.common.Common;
 import org.hyperledger.fabric.protos.msp.Identities;
 import org.hyperledger.fabric.protos.peer.FabricTransaction;
+import org.hyperledger.fabric.sdk.BlockEvent;
 import org.hyperledger.fabric.sdk.BlockListener;
 import org.hyperledger.fabric.sdk.Peer;
 import org.influxdb.dto.Point;
@@ -55,7 +56,7 @@ public class MonitoringConfiguration {
     private static final String EVENTHUB_URL = "EVENTHUB_URL";
     private static final String VALIDATION_RESULT = "VALIDATION_RESULT";
     private static final String ENDORSEMENTS = "ENDORSEMENTS";
-    private static final String BLOCK_EVENT_MEASUREMENT = "blockEvent";
+    private static final String COMMON_BLOCK_EVENT_MEASUREMENT = "commonBlockEvent";
 
     private final InfluxWriter influxWriter;
 
@@ -210,12 +211,28 @@ public class MonitoringConfiguration {
 
             final String transactionID = blockEvent.getTransactionEvents().get(0).getTransactionID();
 
-//            final Optional<QueryResult> queryOptional = influxSearcher
-//                    .query("SELECT status FROM \"" + BLOCK_EVENT_MEASUREMENT + "\" WHERE \"" + TRANSACTION_ID + "\" = '" + transactionID + "' AND \"" + VALIDATION_RESULT + "\" = '" + validationResult + "'");
-//
-//            if(!queryOptional.isPresent()) {
+            writeCommonBlockEvent(blockEvent, resultValidationList, endorsementsList, transactionID);
+            writeBlockEvent(blockEvent, resultValidationList, endorsementsList, transactionID);
+        };
 
-            Point point = Point.measurement("blockEvent")
+        eventsProcessor.addListener("metrics", metricsEventListener);
+    }
+
+    private void writeBlockEvent(BlockEvent blockEvent, List<FabricTransaction.TxValidationCode> resultValidationList, List<String> endorsementsList, String transactionID) {
+        Point point = Point.measurement(EVENTHUB_NAME)
+                .tag(CHANNEL_ID, blockEvent.getChannelID())
+                .tag(TRANSACTION_ID, transactionID)
+                .addField(TRANSACTION_ID, transactionID)
+                .addField(VALIDATION_RESULT, resultValidationList.toString())
+                .addField(ENDORSEMENTS, endorsementsList.toString())
+                .build();
+        influxWriter.write(point);
+    }
+
+    private synchronized void writeCommonBlockEvent(BlockEvent blockEvent, List<FabricTransaction.TxValidationCode> resultValidationList, List<String> endorsementsList, String transactionID) {
+        boolean isCommonBlockEventExists = influxSearcher.query("SELECT * FROM \"" + COMMON_BLOCK_EVENT_MEASUREMENT + "\" WHERE \"" + TRANSACTION_ID + "\" = '" + transactionID + "' AND \"" + VALIDATION_RESULT + "\" = '" + resultValidationList.toString() + "'").get().getResults().get(0).getSeries() == null;
+        if (isCommonBlockEventExists) {
+            Point commonPoint = Point.measurement(COMMON_BLOCK_EVENT_MEASUREMENT)
                     .tag(CHANNEL_ID, blockEvent.getChannelID())
                     .tag(TRANSACTION_ID, transactionID)
                     .addField(EVENTHUB_NAME, blockEvent.getEventHub().getName())
@@ -224,10 +241,8 @@ public class MonitoringConfiguration {
                     .addField(VALIDATION_RESULT, resultValidationList.toString())
                     .addField(ENDORSEMENTS, endorsementsList.toString())
                     .build();
-            influxWriter.write(point);
-        };
-
-        eventsProcessor.addListener("metrics", metricsEventListener);
+            influxWriter.write(commonPoint);
+        }
     }
 
     private void fillStatusRow(Row row, List<Peer> allPeers) throws CloneNotSupportedException {
