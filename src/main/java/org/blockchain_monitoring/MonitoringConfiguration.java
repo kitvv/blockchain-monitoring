@@ -211,34 +211,32 @@ public class MonitoringConfiguration {
 
             final String transactionID = blockEvent.getTransactionEvents().get(0).getTransactionID();
 
-            writeCommonBlockEvent(blockEvent, resultValidationList, endorsementsList, transactionID);
-            writeBlockEvent(blockEvent, resultValidationList, endorsementsList, transactionID);
+            final String validationResult = resultValidationList.toString();
+            writeCommonBlockEvent(blockEvent, validationResult, endorsementsList, transactionID);
+            writeBlockEvent(blockEvent, validationResult, endorsementsList, transactionID);
         };
 
         eventsProcessor.addListener("metrics", metricsEventListener);
     }
 
-    private void writeBlockEvent(BlockEvent blockEvent, List<FabricTransaction.TxValidationCode> resultValidationList, List<String> endorsementsList, String transactionID) {
-        Point point = Point.measurement(EVENTHUB_NAME)
+    private void writeBlockEvent(BlockEvent blockEvent, String validationResult, List<String> endorsementsList, String transactionID) {
+        Point point = Point.measurement(blockEvent.getEventHub().getName())
                 .tag(CHANNEL_ID, blockEvent.getChannelID())
                 .tag(TRANSACTION_ID, transactionID)
                 .addField(TRANSACTION_ID, transactionID)
-                .addField(VALIDATION_RESULT, resultValidationList.toString())
+                .addField(VALIDATION_RESULT, validationResult)
                 .addField(ENDORSEMENTS, endorsementsList.toString())
                 .build();
         influxWriter.write(point);
     }
 
-    private synchronized void writeCommonBlockEvent(BlockEvent blockEvent, List<FabricTransaction.TxValidationCode> resultValidationList, List<String> endorsementsList, String transactionID) {
-        boolean isCommonBlockEventExists = influxSearcher.query("SELECT * FROM \"" + COMMON_BLOCK_EVENT_MEASUREMENT + "\" WHERE \"" + TRANSACTION_ID + "\" = '" + transactionID + "' AND \"" + VALIDATION_RESULT + "\" = '" + resultValidationList.toString() + "'").get().getResults().get(0).getSeries() == null;
+    private synchronized void writeCommonBlockEvent(BlockEvent blockEvent, String validationResult, List<String> endorsementsList, String transactionID) {
+        boolean isCommonBlockEventExists = influxSearcher.query("SELECT * FROM \"" + COMMON_BLOCK_EVENT_MEASUREMENT + "\" WHERE \"" + TRANSACTION_ID + "\" = '" + transactionID + "' AND \"" + VALIDATION_RESULT + "\" = '" + validationResult + "'").get().getResults().get(0).getSeries() == null;
         if (isCommonBlockEventExists) {
             Point commonPoint = Point.measurement(COMMON_BLOCK_EVENT_MEASUREMENT)
-                    .tag(CHANNEL_ID, blockEvent.getChannelID())
-                    .tag(TRANSACTION_ID, transactionID)
-                    .addField(EVENTHUB_NAME, blockEvent.getEventHub().getName())
-                    .addField(EVENTHUB_URL, blockEvent.getEventHub().getUrl())
+                    .addField(CHANNEL_ID, blockEvent.getChannelID())
                     .addField(TRANSACTION_ID, transactionID)
-                    .addField(VALIDATION_RESULT, resultValidationList.toString())
+                    .addField(VALIDATION_RESULT, validationResult)
                     .addField(ENDORSEMENTS, endorsementsList.toString())
                     .build();
             influxWriter.write(commonPoint);
