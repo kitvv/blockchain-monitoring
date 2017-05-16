@@ -33,6 +33,7 @@ COPY settings.gradle /sources/
 
 RUN gradle --no-daemon clean build -p /sources/
 COPY docker/config/ /etc/grafana/scripts/
+COPY docker/config/grafana/grafana.ini /etc/grafana/grafana.ini
 COPY docker/influxdb.conf /etc/influxdb/influxdb.conf
 COPY docker/init_influx.sh /init_influx.sh
 COPY docker/init_grafana.sh /init_grafana.sh
