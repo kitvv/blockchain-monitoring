@@ -3,6 +3,7 @@ FROM niaquinto/gradle
 MAINTAINER yury.andreev@ru.ibm.com, ruslan.kryukov@ru.ibm.com
 
 ENV INFLUXDB_VERSION 1.2.3
+# TODO ENV PROMETHEUS_VERSION 1.6.2
 ENV GRAFANA_VERSION 4.2.0
 ENV DOWNLOAD_URL https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana_${GRAFANA_VERSION}_amd64.deb
 
@@ -25,6 +26,17 @@ RUN wget -q https://dl.influxdata.com/influxdb/releases/influxdb_${INFLUXDB_VERS
     gpg --batch --verify influxdb_${INFLUXDB_VERSION}_amd64.deb.asc influxdb_${INFLUXDB_VERSION}_amd64.deb && \
     dpkg -i influxdb_${INFLUXDB_VERSION}_amd64.deb && \
     rm -f influxdb_${INFLUXDB_VERSION}_amd64.deb*
+
+#
+# TODO prometheus!
+#
+# https://github.com/z0mt3c/rpi-grafana/blob/2fbe61fb8e2180f413123575c176c01962e836f8/prometheus/Dockerfile
+#RUN wget -q https://github.com/prometheus/prometheus/releases/download/v${PROMETHEUS_VERSION}/prometheus-${PROMETHEUS_VERSION}.linux-armv7.tar.gz && \
+#    mkdir -p /opt/prometheus && \
+#    tar xvfz prometheus-${PROMETHEUS_VERSION}.linux-armv7.tar.gz --strip-components=1 -C /opt/prometheus && \
+#    rm prometheus-${PROMETHEUS_VERSION}.linux-armv7.tar.gz
+
+
 
 COPY src/ /sources/src/
 COPY build.gradle /sources/
