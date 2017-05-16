@@ -1,16 +1,16 @@
-[Blockchain Monitoring Tool](http://blockchain-monitoring.org)
+[Blockchain Monitoring](http://blockchain-monitoring.org)
 ================
 
-BMTool is an open source project designed for Hyperledger Fabric. 
+"Blockchain Monitoring" is an open source project designed for Hyperledger Fabric. 
 
 It provides convient and demonstrative way to represent information
 about blockchain fabric network activities.
 
 ![demo](http://blockchain-monitoring.org/images/demo.png)
 # About
-Project consists of Grafana, Influx DB and BMTool as own, which collects and aggregates telemetry from Fabric.
+Project consists of Grafana, Influx DB and "Blockchain Monitoring" as own, which collects and aggregates telemetry from Fabric.
 ## Requirements
-You need Docker and maybe Docker-compose to run BMTool and open 3000 and 8086 ports. That's all.
+You need Docker and maybe Docker-compose to run "Blockchain Monitoring" and open 3000 and 8086 ports. That's all.
 ## Installation
 You can download docker image with command: `docker pull blockchainmonitoring/blockchain-monitoring:latest`
 
@@ -125,5 +125,5 @@ docker-compose up
 If monitoring seccessully started you can access to it by visiting http://localhost:3000 admin:admin
 
 ## Use monitoring in your code
-BMTool provides you simple API, written in Java. 
+"Blockchain Monitoring" provides you simple API, written in Java. 
 Visit [link](https://github.com/blockchain-monitoring/blockchain-monitoring-api) for more information.
