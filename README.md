@@ -58,6 +58,58 @@ organisations:
   peers:
     - name: 'peer-bar'
       address: 'grpc://172.25.0.107:7051'
+
+channels:
+- name: 'pubfoochan'
+  msp:
+  - 'foo'
+  - 'bar'
+
+  endorsers:
+  - name: 'peer-foo'
+    msp: 'foo'
+    address: 'grpc://172.25.0.104:7051'
+
+  - name: 'peer-foo-02'
+    msp: 'foo'
+    address: 'grpc://172.25.0.105:7051'
+
+  - name: 'peer-foo-03'
+    msp: 'foo'
+    address: 'grpc://172.25.0.106:7051'
+
+  - name: 'peer-bar'
+    msp: 'bar'
+    address: 'grpc://172.25.0.107:7051'
+
+  orderers:
+  - name: 'foo-orderer'
+    msp:
+    - 'foo'
+    - 'bar'
+    address: 'grpc://172.25.0.102:7050'
+
+  events:
+  - name: 'ev-peer-foo'
+    msp: 'foo'
+    address: 'grpc://172.25.0.104:7053'
+
+  - name: 'ev-peer-foo-02'
+    msp: 'foo'
+    address: 'grpc://172.25.0.105:7053'
+
+  - name: 'ev-peer-foo-03'
+    msp: 'foo'
+    address: 'grpc://172.25.0.106:7053'
+
+  - name: 'ev-peer-bar'
+    msp: 'bar'
+    address: 'grpc://172.25.0.107:7053'
+
+  chaincodes:
+  - name: 'prettycode'
+    path: 'github.xyz/thebestcode/prettycode'
+    version: '1.0'
 ```
 
 This file describes fabric network configuration and contains two main sections: organization and channels.
