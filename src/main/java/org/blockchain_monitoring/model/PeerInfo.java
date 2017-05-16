@@ -1,19 +1,19 @@
 package org.blockchain_monitoring.model;
 
+import org.hyperledger.fabric.protos.peer.Query;
+
 import java.util.List;
 import java.util.Set;
-
-import org.hyperledger.fabric.protos.peer.Query;
 
 public class PeerInfo {
     private final String name;
     private final List<Query.ChaincodeInfo> chaincodInfoList;
-    private final Set<String> channelList;
+    private final Set<ChannelInfo> channelList;
     private final PeerStatus status;
 
     private PeerInfo(final String name,
                      final List<Query.ChaincodeInfo> chaincodInfoList,
-                     final Set<String> channelList,
+                     final Set<ChannelInfo> channelList,
                      final PeerStatus status) {
         this.name = name;
         this.chaincodInfoList = chaincodInfoList;
@@ -29,7 +29,7 @@ public class PeerInfo {
         return chaincodInfoList;
     }
 
-    public Set<String> getChannelList() {
+    public Set<ChannelInfo> getChannelList() {
         return channelList;
     }
 
@@ -37,7 +37,7 @@ public class PeerInfo {
         return status;
     }
 
-    public static PeerInfo of(String name, List<Query.ChaincodeInfo> chaincodInfoList, Set<String> channelList, PeerStatus status) {
+    public static PeerInfo of(String name, List<Query.ChaincodeInfo> chaincodInfoList, Set<ChannelInfo> channelList, PeerStatus status) {
         return new PeerInfo(name, chaincodInfoList, channelList, status);
     }
 }
