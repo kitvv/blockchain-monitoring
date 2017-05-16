@@ -52,9 +52,8 @@ public class MonitoringConfiguration {
     private static final String DASHBOARD_TITLE = "Monitoring Hyperledger";
     private static final String CHANNEL_ID = "CHANNEL_ID";
     private static final String TRANSACTION_ID = "TRANSACTION_ID";
-    private static final String EVENTHUB_NAME = "EVENTHUB_NAME";
-    private static final String EVENTHUB_URL = "EVENTHUB_URL";
-    private static final String VALIDATION_RESULT = "VALIDATION_RESULT";
+    private static final String VALIDATION_RESULT_CODE = "VALIDATION_RESULT_CODE";
+    private static final String VALIDATION_RESULT_NAME = "VALIDATION_RESULT_NAME";
     private static final String ENDORSEMENTS = "ENDORSEMENTS";
     private static final String COMMON_BLOCK_EVENT_MEASUREMENT = "commonBlockEvent";
 
@@ -172,9 +171,9 @@ public class MonitoringConfiguration {
 
     private void initEventHandlers() {
         BlockListener metricsEventListener = blockEvent -> {
-            List<FabricTransaction.TxValidationCode> resultValidationList = blockEvent.getTransactionEvents().parallelStream()
+            FabricTransaction.TxValidationCode validationResult = blockEvent.getTransactionEvents().parallelStream()
                     .map(transactionEvent -> FabricTransaction.TxValidationCode.forNumber(transactionEvent.validationCode()))
-                    .collect(Collectors.toList());
+                    .findFirst().get();
 
             List<String> endorsementsList;
             try {
@@ -211,7 +210,6 @@ public class MonitoringConfiguration {
 
             final String transactionID = blockEvent.getTransactionEvents().get(0).getTransactionID();
 
-            final String validationResult = resultValidationList.toString();
             writeCommonBlockEvent(blockEvent, validationResult, endorsementsList, transactionID);
             writeBlockEvent(blockEvent, validationResult, endorsementsList, transactionID);
         };
@@ -219,24 +217,26 @@ public class MonitoringConfiguration {
         eventsProcessor.addListener("metrics", metricsEventListener);
     }
 
-    private void writeBlockEvent(BlockEvent blockEvent, String validationResult, List<String> endorsementsList, String transactionID) {
+    private void writeBlockEvent(BlockEvent blockEvent, FabricTransaction.TxValidationCode validationResult, List<String> endorsementsList, String transactionID) {
         Point point = Point.measurement(blockEvent.getEventHub().getName())
                 .tag(CHANNEL_ID, blockEvent.getChannelID())
                 .tag(TRANSACTION_ID, transactionID)
                 .addField(TRANSACTION_ID, transactionID)
-                .addField(VALIDATION_RESULT, validationResult)
+                .addField(VALIDATION_RESULT_NAME, validationResult.name())
+                .addField(VALIDATION_RESULT_CODE, validationResult.getNumber())
                 .addField(ENDORSEMENTS, endorsementsList.toString())
                 .build();
         influxWriter.write(point);
     }
 
-    private synchronized void writeCommonBlockEvent(BlockEvent blockEvent, String validationResult, List<String> endorsementsList, String transactionID) {
-        boolean isCommonBlockEventExists = influxSearcher.query("SELECT * FROM \"" + COMMON_BLOCK_EVENT_MEASUREMENT + "\" WHERE \"" + TRANSACTION_ID + "\" = '" + transactionID + "' AND \"" + VALIDATION_RESULT + "\" = '" + validationResult + "'").get().getResults().get(0).getSeries() == null;
+    private synchronized void writeCommonBlockEvent(BlockEvent blockEvent, FabricTransaction.TxValidationCode validationResult, List<String> endorsementsList, String transactionID) {
+        boolean isCommonBlockEventExists = influxSearcher.query("SELECT * FROM \"" + COMMON_BLOCK_EVENT_MEASUREMENT + "\" WHERE \"" + TRANSACTION_ID + "\" = '" + transactionID + "' AND \"" + VALIDATION_RESULT_CODE + "\" = '" + validationResult.getNumber() + "'").get().getResults().get(0).getSeries() == null;
         if (isCommonBlockEventExists) {
             Point commonPoint = Point.measurement(COMMON_BLOCK_EVENT_MEASUREMENT)
                     .addField(CHANNEL_ID, blockEvent.getChannelID())
                     .addField(TRANSACTION_ID, transactionID)
-                    .addField(VALIDATION_RESULT, validationResult)
+                    .addField(VALIDATION_RESULT_NAME, validationResult.name())
+                    .addField(VALIDATION_RESULT_CODE, validationResult.getNumber())
                     .addField(ENDORSEMENTS, endorsementsList.toString())
                     .build();
             influxWriter.write(commonPoint);
