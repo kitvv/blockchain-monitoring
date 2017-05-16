@@ -4,7 +4,9 @@
 BMTool is an open source project designed for Hyperledger Fabric. 
 
 It provides convient and demonstrative way to represent information
-about blockchain fabric network activities. 
+about blockchain fabric network activities.
+
+![demo](http://blockchain-monitoring.org/images/demo.png)
 # About
 Project consists of Grafana, Influx DB and BMTool as own, which collects and aggregates telemetry from Fabric.
 ## Requirements
