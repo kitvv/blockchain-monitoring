@@ -1,7 +1,7 @@
 [Blockchain Monitoring](http://blockchain-monitoring.org)
 ================
 
-"Blockchain Monitoring" is an open source project designed for Hyperledger Fabric. 
+"Blockchain Monitoring" is an open source project designed for **Hyperledger Fabric v1.0**. 
 
 It provides convient and demonstrative way to represent information
 about blockchain fabric network activities.
