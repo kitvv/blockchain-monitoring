@@ -8,12 +8,12 @@ import java.util.Set;
 public class PeerInfo {
     private final String name;
     private final List<Query.ChaincodeInfo> chaincodInfoList;
-    private final Set<ChannelInfo> channelList;
+    private final Set<String> channelList;
     private final PeerStatus status;
 
     private PeerInfo(final String name,
                      final List<Query.ChaincodeInfo> chaincodInfoList,
-                     final Set<ChannelInfo> channelList,
+                     final Set<String> channelList,
                      final PeerStatus status) {
         this.name = name;
         this.chaincodInfoList = chaincodInfoList;
@@ -29,7 +29,7 @@ public class PeerInfo {
         return chaincodInfoList;
     }
 
-    public Set<ChannelInfo> getChannelList() {
+    public Set<String> getChannelList() {
         return channelList;
     }
 
@@ -37,7 +37,7 @@ public class PeerInfo {
         return status;
     }
 
-    public static PeerInfo of(String name, List<Query.ChaincodeInfo> chaincodInfoList, Set<ChannelInfo> channelList, PeerStatus status) {
+    public static PeerInfo of(String name, List<Query.ChaincodeInfo> chaincodInfoList, Set<String> channelList, PeerStatus status) {
         return new PeerInfo(name, chaincodInfoList, channelList, status);
     }
 }

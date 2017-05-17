@@ -2,11 +2,9 @@ package org.blockchain_monitoring.scheduler;
 
 import org.blockchain_monitoring.fly_client.FlyClient;
 import org.blockchain_monitoring.fly_client_spring.FlyNet;
-import org.blockchain_monitoring.model.ChannelInfo;
 import org.blockchain_monitoring.model.PeerInfo;
 import org.blockchain_monitoring.model.PeerStatus;
 import org.blockchain_monitoring.service.MonitoringDB;
-import org.hyperledger.fabric.protos.common.Ledger;
 import org.hyperledger.fabric.protos.peer.Query;
 import org.hyperledger.fabric.sdk.Peer;
 import org.slf4j.Logger;
@@ -42,19 +40,12 @@ public class OrganisationMetricWriter implements Consumer<FlyNet.Organization> {
     private Optional<PeerInfo> getPeerInfo(final Peer peer, FlyClient flyClient) {
         try {
             final List<Query.ChaincodeInfo> chaincodInfoList = new ArrayList<>();
-            final Set<ChannelInfo> channelList = new HashSet<>();
+            final Set<String> channelList = new HashSet<>();
 
             PeerStatus status;
             try {
                 chaincodInfoList.addAll(flyClient.queryInstalledChaincodes(peer));
-                for(String name: flyClient.queryChannels(peer)) {
-                    flyClient.findChannelClient(name).ifPresent(x -> {
-                        try {
-                            Ledger.BlockchainInfo info = x.getChain().queryBlockchainInfo(peer).getBlockchainInfo();
-                            channelList.add(new ChannelInfo(name, info.getHeight()));
-                        } catch (Exception ignore) {}
-                    });
-                }
+                channelList.addAll(flyClient.queryChannels(peer));
                 status = PeerStatus.UP;
             } catch (Exception e) {
                 status = PeerStatus.DOWN;
