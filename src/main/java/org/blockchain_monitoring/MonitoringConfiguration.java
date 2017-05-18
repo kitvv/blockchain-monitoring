@@ -193,15 +193,14 @@ public class MonitoringConfiguration {
                             try {
                                 certificate = X509Certificate.getInstance(serializedIdentity.getIdBytes().toByteArray());
                                 try {
-                                    commonName = ((X500Name) certificate.getSubjectDN()).getCommonName();
-                                    System.out.println("commonName: " + commonName);
+                                        commonName = ((X500Name) certificate.getSubjectDN()).getCommonName();
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
                             } catch (CertificateException e) {
                                 e.printStackTrace();
                             }
-                            return String.join(commonName, "(", serializedIdentity.getMspid(), ")");
+                            return commonName;
                         }).collect(Collectors.toList());
             } catch (InvalidProtocolBufferException e) {
                 e.printStackTrace();
