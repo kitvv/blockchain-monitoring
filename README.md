@@ -1,6 +1,9 @@
 [Blockchain Monitoring](http://blockchain-monitoring.org)
 ================
 
+
+**Continuous integration:** [![Build Status](https://travis-ci.org/blockchain-monitoring/blockchain-monitoring.svg?branch=master)](https://travis-ci.org/blockchain-monitoring/blockchain-monitoring)
+
 "Blockchain Monitoring" is an open source project designed for **Hyperledger Fabric v1.0**. 
 
 It provides convenient and demonstrative way to represent information
