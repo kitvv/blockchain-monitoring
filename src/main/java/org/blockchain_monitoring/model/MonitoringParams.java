@@ -9,15 +9,17 @@ public class MonitoringParams {
     private final String urlGrafana;
     private final String dashboardsGrafana;
     private final String datasourcesGrafana;
+    private final String orgPreferencesGrafana;
     private final String usernameInfluxDB;
     private final String passwordInfluxDB;
 
-    public MonitoringParams(String configPath, String urlInfluxDB, String urlGrafana, String dashboardsGrafana, String datasourcesGrafana, String usernameInfluxDB, String passwordInfluxDB) {
+    public MonitoringParams(String configPath, String urlInfluxDB, String urlGrafana, String dashboardsGrafana, String datasourcesGrafana, String usernameInfluxDB, String passwordInfluxDB, String orgPreferencesGrafana) {
         this.configPath = configPath;
         this.urlInfluxDB = urlInfluxDB;
         this.urlGrafana = urlGrafana;
         this.dashboardsGrafana = dashboardsGrafana;
         this.datasourcesGrafana = datasourcesGrafana;
+        this.orgPreferencesGrafana = orgPreferencesGrafana;
         this.usernameInfluxDB = usernameInfluxDB;
         this.passwordInfluxDB = passwordInfluxDB;
     }
@@ -48,5 +50,9 @@ public class MonitoringParams {
 
     public String getPasswordInfluxDB() {
         return passwordInfluxDB;
+    }
+
+    public String getOrgPreferencesGrafana() {
+        return orgPreferencesGrafana;
     }
 }

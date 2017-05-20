@@ -25,6 +25,7 @@ import org.blockchain_monitoring.model.grafana.dashboard.Panel;
 import org.blockchain_monitoring.model.grafana.dashboard.Row;
 import org.blockchain_monitoring.model.grafana.dashboard.Target;
 import org.blockchain_monitoring.model.grafana.datasource.Datasource;
+import org.blockchain_monitoring.model.grafana.datasource.OrgPreferences;
 import org.hyperledger.fabric.protos.common.Common;
 import org.hyperledger.fabric.protos.msp.Identities;
 import org.hyperledger.fabric.protos.peer.FabricTransaction;
@@ -108,6 +109,32 @@ public class MonitoringConfiguration {
         } catch (Throwable e) {
             e.printStackTrace();
         }
+
+        try {
+            orgPreferences();
+        } catch (HttpClientErrorException e) {
+            final String responseBodyAsString = e.getResponseBodyAsString();
+            log.error(responseBodyAsString);
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void orgPreferences() throws IOException {
+        log.info("start init grafana datasources");
+        final File orgPreferencesTemplate = new File(monitoringParams.getOrgPreferencesGrafana());
+        final OrgPreferences orgPreferences = mapper.readValue(orgPreferencesTemplate, OrgPreferences.class);
+
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.add("Authorization", "Basic YWRtaW46YWRtaW4=");
+        RestTemplate restTemplate = new RestTemplate();
+        HttpEntity<OrgPreferences> request = new HttpEntity<>(orgPreferences, headers);
+
+        final String orgPreferencesURL = monitoringParams.getUrlGrafana() + "/api/org/preferences";
+        restTemplate.postForObject(orgPreferencesURL, request, String.class);
+        log.info("finish init grafana OrgPreferences");
     }
 
     private void initDatasources() throws IOException {

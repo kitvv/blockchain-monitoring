@@ -26,11 +26,12 @@ public class ProfileConfig {
 
         final String dashboardsGrafana = getProperty("grafana.dashboards");
         final String datasourcesGrafana = getProperty("grafana.datasources");
+        final String orgPreferencesGrafana = getProperty("grafana.orgPreferences");
 
         final String usernameInfluxDB = getProperty("influxDB.username");
         final String passwordInfluxDB = getProperty("influxDB.password");
 
-        final MonitoringParams monitoringParams = new MonitoringParams(configPath, urlInfluxDB, urlGrafana, dashboardsGrafana, datasourcesGrafana, usernameInfluxDB, passwordInfluxDB);
+        final MonitoringParams monitoringParams = new MonitoringParams(configPath, urlInfluxDB, urlGrafana, dashboardsGrafana, datasourcesGrafana, usernameInfluxDB, passwordInfluxDB, orgPreferencesGrafana);
         log.info(monitoringParams.toString());
         return monitoringParams;
     }
