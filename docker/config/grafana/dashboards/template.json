@@ -135,14 +135,7 @@
                 "tags": []
               }
             ],
-            "styles": [
-              {
-                "thresholds": [
-                  "0.5",
-                  "0.5"
-                ]
-              }
-            ],
+            "thresholds": "0.5,0.5",
             "title": "peer-1",
             "type": "singlestat",
             "valueFontSize": "50%",
@@ -242,14 +235,7 @@
                 "tags": []
               }
             ],
-            "styles": [
-              {
-                "thresholds": [
-                  "0.5",
-                  "0.5"
-                ]
-              }
-            ],
+            "thresholds": "0.5,0.5",
             "title": "peer-2",
             "type": "singlestat",
             "valueFontSize": "50%",
@@ -349,14 +335,7 @@
                 "tags": []
               }
             ],
-            "styles": [
-              {
-                "thresholds": [
-                  "0.5",
-                  "0.5"
-                ]
-              }
-            ],
+            "thresholds": "0.5,0.5",
             "title": "peer-3",
             "type": "singlestat",
             "valueFontSize": "50%",
@@ -679,12 +658,6 @@
                 ]
               }
             ],
-            "styles": [
-              {
-                "thresholds": [
-                ]
-              }
-            ],
             "title": "peer-2",
             "type": "singlestat",
             "valueFontSize": "50%",
@@ -779,12 +752,6 @@
                 ]
               }
             ],
-            "styles": [
-              {
-                "thresholds": [
-                ]
-              }
-            ],
             "title": "peer-3",
             "type": "singlestat",
             "valueFontSize": "50%",
@@ -876,12 +843,6 @@
                     "operator": "=",
                     "value": "UP"
                   }
-                ]
-              }
-            ],
-            "styles": [
-              {
-                "thresholds": [
                 ]
               }
             ],
@@ -985,12 +946,6 @@
                 "tags": []
               }
             ],
-            "styles": [
-              {
-                "thresholds": [
-                ]
-              }
-            ],
             "title": "peer-1",
             "type": "singlestat",
             "valueFontSize": "50%",
@@ -1077,12 +1032,6 @@
                   ]
                 ],
                 "tags": []
-              }
-            ],
-            "styles": [
-              {
-                "thresholds": [
-                ]
               }
             ],
             "title": "peer-2",
@@ -1173,12 +1122,6 @@
                 "tags": []
               }
             ],
-            "styles": [
-              {
-                "thresholds": [
-                ]
-              }
-            ],
             "title": "peer-3",
             "type": "singlestat",
             "valueFontSize": "50%",
@@ -1265,12 +1208,6 @@
                   ]
                 ],
                 "tags": []
-              }
-            ],
-            "styles": [
-              {
-                "thresholds": [
-                ]
               }
             ],
             "title": "peer-4",

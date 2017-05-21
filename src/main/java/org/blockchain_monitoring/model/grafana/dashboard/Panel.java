@@ -121,7 +121,7 @@ public class Panel implements Cloneable {
     @JsonProperty("targets")
     private List<Target> targets = null;
     @JsonProperty("thresholds")
-    private List<Threshold> thresholds = null;
+    private Object thresholds = null;
     @JsonProperty("title")
     private String title;
     @JsonProperty("type")
@@ -424,12 +424,12 @@ public class Panel implements Cloneable {
     }
 
     @JsonProperty("thresholds")
-    public List<Threshold> getThresholds() {
+    public Object getThresholds() {
         return thresholds;
     }
 
     @JsonProperty("thresholds")
-    public void setThresholds(List<Threshold> thresholds) {
+    public void setThresholds(Object thresholds) {
         this.thresholds = thresholds;
     }
 
