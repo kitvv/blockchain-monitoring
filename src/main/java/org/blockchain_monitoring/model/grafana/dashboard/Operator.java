@@ -12,36 +12,23 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "from",
-    "to"
+    "type"
 })
-public class Time {
+public class Operator {
 
-    @JsonProperty("from")
-    private String from;
-    @JsonProperty("to")
-    private String to;
+    @JsonProperty("type")
+    private String type;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    @JsonProperty("from")
-    public String getFrom() {
-        return from;
+    @JsonProperty("type")
+    public String getType() {
+        return type;
     }
 
-    @JsonProperty("from")
-    public void setFrom(String from) {
-        this.from = from;
-    }
-
-    @JsonProperty("to")
-    public String getTo() {
-        return to;
-    }
-
-    @JsonProperty("to")
-    public void setTo(String to) {
-        this.to = to;
+    @JsonProperty("type")
+    public void setType(String type) {
+        this.type = type;
     }
 
     @JsonAnyGetter

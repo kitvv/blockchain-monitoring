@@ -2,6 +2,7 @@
 package org.blockchain_monitoring.model.grafana.dashboard;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -12,52 +13,42 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "fillColor",
-    "full",
-    "lineColor",
-    "show"
+    "mode",
+    "name",
+    "show",
+    "values"
 })
-public class Sparkline {
+public class Xaxis {
 
-    @JsonProperty("fillColor")
-    private String fillColor;
-    @JsonProperty("full")
-    private Boolean full;
-    @JsonProperty("lineColor")
-    private String lineColor;
+    @JsonProperty("mode")
+    private String mode;
+    @JsonProperty("name")
+    private Object name;
     @JsonProperty("show")
     private Boolean show;
+    @JsonProperty("values")
+    private List<String> values = null;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    @JsonProperty("fillColor")
-    public String getFillColor() {
-        return fillColor;
+    @JsonProperty("mode")
+    public String getMode() {
+        return mode;
     }
 
-    @JsonProperty("fillColor")
-    public void setFillColor(String fillColor) {
-        this.fillColor = fillColor;
+    @JsonProperty("mode")
+    public void setMode(String mode) {
+        this.mode = mode;
     }
 
-    @JsonProperty("full")
-    public Boolean getFull() {
-        return full;
+    @JsonProperty("name")
+    public Object getName() {
+        return name;
     }
 
-    @JsonProperty("full")
-    public void setFull(Boolean full) {
-        this.full = full;
-    }
-
-    @JsonProperty("lineColor")
-    public String getLineColor() {
-        return lineColor;
-    }
-
-    @JsonProperty("lineColor")
-    public void setLineColor(String lineColor) {
-        this.lineColor = lineColor;
+    @JsonProperty("name")
+    public void setName(Object name) {
+        this.name = name;
     }
 
     @JsonProperty("show")
@@ -68,6 +59,16 @@ public class Sparkline {
     @JsonProperty("show")
     public void setShow(Boolean show) {
         this.show = show;
+    }
+
+    @JsonProperty("values")
+    public List<String> getValues() {
+        return values;
+    }
+
+    @JsonProperty("values")
+    public void setValues(List<String> values) {
+        this.values = values;
     }
 
     @JsonAnyGetter

@@ -1,8 +1,8 @@
+
 package org.blockchain_monitoring.model.grafana.dashboard;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -12,22 +12,35 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-        "dashboard"
+    "meta",
+    "dashboard"
 })
 public class Dashboard {
 
+    @JsonProperty("meta")
+    private Meta meta;
     @JsonProperty("dashboard")
-    private Dashboard_ dashboard;
+    private DashboardInfo dashboard;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<>();
+    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+
+    @JsonProperty("meta")
+    public Meta getMeta() {
+        return meta;
+    }
+
+    @JsonProperty("meta")
+    public void setMeta(Meta meta) {
+        this.meta = meta;
+    }
 
     @JsonProperty("dashboard")
-    public Dashboard_ getDashboard() {
+    public DashboardInfo getDashboard() {
         return dashboard;
     }
 
     @JsonProperty("dashboard")
-    public void setDashboard(Dashboard_ dashboard) {
+    public void setDashboard(DashboardInfo dashboard) {
         this.dashboard = dashboard;
     }
 

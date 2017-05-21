@@ -1,5 +1,9 @@
+
 package org.blockchain_monitoring.model.grafana.dashboard;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -7,51 +11,66 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-        "cacheTimeout",
-        "colorBackground",
-        "colorValue",
-        "colors",
-        "datasource",
-        "format",
-        "gauge",
-        "id",
-        "interval",
-        "links",
-        "mappingType",
-        "mappingTypes",
-        "maxDataPoints",
-        "nullPointMode",
-        "nullText",
-        "postfix",
-        "postfixFontSize",
-        "prefix",
-        "prefixFontSize",
-        "rangeMaps",
-        "span",
-        "sparkline",
-        "targets",
-        "thresholds",
-        "title",
-        "type",
-        "valueFontSize",
-        "valueMaps",
-        "valueName",
-        "decimals",
-        "columns",
-        "filterNull",
-        "fontSize",
-        "pageSize",
-        "scroll",
-        "showHeader",
-        "sort",
-        "styles",
-        "transform"
+    "cacheTimeout",
+    "colorBackground",
+    "colorValue",
+    "colors",
+    "datasource",
+    "format",
+    "gauge",
+    "id",
+    "interval",
+    "links",
+    "mappingType",
+    "mappingTypes",
+    "maxDataPoints",
+    "nullPointMode",
+    "nullText",
+    "postfix",
+    "postfixFontSize",
+    "prefix",
+    "prefixFontSize",
+    "rangeMaps",
+    "span",
+    "sparkline",
+    "targets",
+    "thresholds",
+    "title",
+    "type",
+    "valueFontSize",
+    "valueMaps",
+    "valueName",
+    "columns",
+    "filterNull",
+    "fontSize",
+    "pageSize",
+    "scroll",
+    "showHeader",
+    "sort",
+    "styles",
+    "timeFrom",
+    "timeShift",
+    "transform",
+    "alert",
+    "aliasColors",
+    "bars",
+    "decimals",
+    "fill",
+    "legend",
+    "lines",
+    "linewidth",
+    "percentage",
+    "pointradius",
+    "points",
+    "renderer",
+    "seriesOverrides",
+    "stack",
+    "steppedLine",
+    "tooltip",
+    "xaxis",
+    "yaxes"
 })
 public class Panel implements Cloneable {
 
@@ -102,7 +121,7 @@ public class Panel implements Cloneable {
     @JsonProperty("targets")
     private List<Target> targets = null;
     @JsonProperty("thresholds")
-    private String thresholds;
+    private List<Threshold> thresholds = null;
     @JsonProperty("title")
     private String title;
     @JsonProperty("type")
@@ -113,8 +132,6 @@ public class Panel implements Cloneable {
     private List<ValueMap> valueMaps = null;
     @JsonProperty("valueName")
     private String valueName;
-    @JsonProperty("decimals")
-    private Object decimals;
     @JsonProperty("columns")
     private List<Object> columns = null;
     @JsonProperty("filterNull")
@@ -131,8 +148,48 @@ public class Panel implements Cloneable {
     private Sort sort;
     @JsonProperty("styles")
     private List<Style> styles = null;
+    @JsonProperty("timeFrom")
+    private Object timeFrom;
+    @JsonProperty("timeShift")
+    private Object timeShift;
     @JsonProperty("transform")
     private String transform;
+    @JsonProperty("alert")
+    private Alert alert;
+    @JsonProperty("aliasColors")
+    private AliasColors aliasColors;
+    @JsonProperty("bars")
+    private Boolean bars;
+    @JsonProperty("decimals")
+    private Object decimals;
+    @JsonProperty("fill")
+    private Integer fill;
+    @JsonProperty("legend")
+    private Legend legend;
+    @JsonProperty("lines")
+    private Boolean lines;
+    @JsonProperty("linewidth")
+    private Integer linewidth;
+    @JsonProperty("percentage")
+    private Boolean percentage;
+    @JsonProperty("pointradius")
+    private Integer pointradius;
+    @JsonProperty("points")
+    private Boolean points;
+    @JsonProperty("renderer")
+    private String renderer;
+    @JsonProperty("seriesOverrides")
+    private List<Object> seriesOverrides = null;
+    @JsonProperty("stack")
+    private Boolean stack;
+    @JsonProperty("steppedLine")
+    private Boolean steppedLine;
+    @JsonProperty("tooltip")
+    private Tooltip tooltip;
+    @JsonProperty("xaxis")
+    private Xaxis xaxis;
+    @JsonProperty("yaxes")
+    private List<Yaxis> yaxes = null;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -367,12 +424,12 @@ public class Panel implements Cloneable {
     }
 
     @JsonProperty("thresholds")
-    public String getThresholds() {
+    public List<Threshold> getThresholds() {
         return thresholds;
     }
 
     @JsonProperty("thresholds")
-    public void setThresholds(String thresholds) {
+    public void setThresholds(List<Threshold> thresholds) {
         this.thresholds = thresholds;
     }
 
@@ -424,16 +481,6 @@ public class Panel implements Cloneable {
     @JsonProperty("valueName")
     public void setValueName(String valueName) {
         this.valueName = valueName;
-    }
-
-    @JsonProperty("decimals")
-    public Object getDecimals() {
-        return decimals;
-    }
-
-    @JsonProperty("decimals")
-    public void setDecimals(Object decimals) {
-        this.decimals = decimals;
     }
 
     @JsonProperty("columns")
@@ -516,6 +563,26 @@ public class Panel implements Cloneable {
         this.styles = styles;
     }
 
+    @JsonProperty("timeFrom")
+    public Object getTimeFrom() {
+        return timeFrom;
+    }
+
+    @JsonProperty("timeFrom")
+    public void setTimeFrom(Object timeFrom) {
+        this.timeFrom = timeFrom;
+    }
+
+    @JsonProperty("timeShift")
+    public Object getTimeShift() {
+        return timeShift;
+    }
+
+    @JsonProperty("timeShift")
+    public void setTimeShift(Object timeShift) {
+        this.timeShift = timeShift;
+    }
+
     @JsonProperty("transform")
     public String getTransform() {
         return transform;
@@ -524,6 +591,186 @@ public class Panel implements Cloneable {
     @JsonProperty("transform")
     public void setTransform(String transform) {
         this.transform = transform;
+    }
+
+    @JsonProperty("alert")
+    public Alert getAlert() {
+        return alert;
+    }
+
+    @JsonProperty("alert")
+    public void setAlert(Alert alert) {
+        this.alert = alert;
+    }
+
+    @JsonProperty("aliasColors")
+    public AliasColors getAliasColors() {
+        return aliasColors;
+    }
+
+    @JsonProperty("aliasColors")
+    public void setAliasColors(AliasColors aliasColors) {
+        this.aliasColors = aliasColors;
+    }
+
+    @JsonProperty("bars")
+    public Boolean getBars() {
+        return bars;
+    }
+
+    @JsonProperty("bars")
+    public void setBars(Boolean bars) {
+        this.bars = bars;
+    }
+
+    @JsonProperty("decimals")
+    public Object getDecimals() {
+        return decimals;
+    }
+
+    @JsonProperty("decimals")
+    public void setDecimals(Object decimals) {
+        this.decimals = decimals;
+    }
+
+    @JsonProperty("fill")
+    public Integer getFill() {
+        return fill;
+    }
+
+    @JsonProperty("fill")
+    public void setFill(Integer fill) {
+        this.fill = fill;
+    }
+
+    @JsonProperty("legend")
+    public Legend getLegend() {
+        return legend;
+    }
+
+    @JsonProperty("legend")
+    public void setLegend(Legend legend) {
+        this.legend = legend;
+    }
+
+    @JsonProperty("lines")
+    public Boolean getLines() {
+        return lines;
+    }
+
+    @JsonProperty("lines")
+    public void setLines(Boolean lines) {
+        this.lines = lines;
+    }
+
+    @JsonProperty("linewidth")
+    public Integer getLinewidth() {
+        return linewidth;
+    }
+
+    @JsonProperty("linewidth")
+    public void setLinewidth(Integer linewidth) {
+        this.linewidth = linewidth;
+    }
+
+    @JsonProperty("percentage")
+    public Boolean getPercentage() {
+        return percentage;
+    }
+
+    @JsonProperty("percentage")
+    public void setPercentage(Boolean percentage) {
+        this.percentage = percentage;
+    }
+
+    @JsonProperty("pointradius")
+    public Integer getPointradius() {
+        return pointradius;
+    }
+
+    @JsonProperty("pointradius")
+    public void setPointradius(Integer pointradius) {
+        this.pointradius = pointradius;
+    }
+
+    @JsonProperty("points")
+    public Boolean getPoints() {
+        return points;
+    }
+
+    @JsonProperty("points")
+    public void setPoints(Boolean points) {
+        this.points = points;
+    }
+
+    @JsonProperty("renderer")
+    public String getRenderer() {
+        return renderer;
+    }
+
+    @JsonProperty("renderer")
+    public void setRenderer(String renderer) {
+        this.renderer = renderer;
+    }
+
+    @JsonProperty("seriesOverrides")
+    public List<Object> getSeriesOverrides() {
+        return seriesOverrides;
+    }
+
+    @JsonProperty("seriesOverrides")
+    public void setSeriesOverrides(List<Object> seriesOverrides) {
+        this.seriesOverrides = seriesOverrides;
+    }
+
+    @JsonProperty("stack")
+    public Boolean getStack() {
+        return stack;
+    }
+
+    @JsonProperty("stack")
+    public void setStack(Boolean stack) {
+        this.stack = stack;
+    }
+
+    @JsonProperty("steppedLine")
+    public Boolean getSteppedLine() {
+        return steppedLine;
+    }
+
+    @JsonProperty("steppedLine")
+    public void setSteppedLine(Boolean steppedLine) {
+        this.steppedLine = steppedLine;
+    }
+
+    @JsonProperty("tooltip")
+    public Tooltip getTooltip() {
+        return tooltip;
+    }
+
+    @JsonProperty("tooltip")
+    public void setTooltip(Tooltip tooltip) {
+        this.tooltip = tooltip;
+    }
+
+    @JsonProperty("xaxis")
+    public Xaxis getXaxis() {
+        return xaxis;
+    }
+
+    @JsonProperty("xaxis")
+    public void setXaxis(Xaxis xaxis) {
+        this.xaxis = xaxis;
+    }
+
+    @JsonProperty("yaxes")
+    public List<Yaxis> getYaxes() {
+        return yaxes;
+    }
+
+    @JsonProperty("yaxes")
+    public void setYaxes(List<Yaxis> yaxes) {
+        this.yaxes = yaxes;
     }
 
     @JsonAnyGetter

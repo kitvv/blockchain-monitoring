@@ -2,6 +2,7 @@
 package org.blockchain_monitoring.model.grafana.dashboard;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -12,36 +13,36 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "from",
-    "to"
+    "params",
+    "type"
 })
-public class Time {
+public class GroupBy {
 
-    @JsonProperty("from")
-    private String from;
-    @JsonProperty("to")
-    private String to;
+    @JsonProperty("params")
+    private List<String> params = null;
+    @JsonProperty("type")
+    private String type;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    @JsonProperty("from")
-    public String getFrom() {
-        return from;
+    @JsonProperty("params")
+    public List<String> getParams() {
+        return params;
     }
 
-    @JsonProperty("from")
-    public void setFrom(String from) {
-        this.from = from;
+    @JsonProperty("params")
+    public void setParams(List<String> params) {
+        this.params = params;
     }
 
-    @JsonProperty("to")
-    public String getTo() {
-        return to;
+    @JsonProperty("type")
+    public String getType() {
+        return type;
     }
 
-    @JsonProperty("to")
-    public void setTo(String to) {
-        this.to = to;
+    @JsonProperty("type")
+    public void setType(String type) {
+        this.type = type;
     }
 
     @JsonAnyGetter

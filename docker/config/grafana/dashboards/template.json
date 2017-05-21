@@ -135,7 +135,14 @@
                 "tags": []
               }
             ],
-            "thresholds": "0.5,0.5",
+            "styles": [
+              {
+                "thresholds": [
+                  "0.5",
+                  "0.5"
+                ]
+              }
+            ],
             "title": "peer-1",
             "type": "singlestat",
             "valueFontSize": "50%",
@@ -235,7 +242,14 @@
                 "tags": []
               }
             ],
-            "thresholds": "0.5,0.5",
+            "styles": [
+              {
+                "thresholds": [
+                  "0.5",
+                  "0.5"
+                ]
+              }
+            ],
             "title": "peer-2",
             "type": "singlestat",
             "valueFontSize": "50%",
@@ -335,7 +349,14 @@
                 "tags": []
               }
             ],
-            "thresholds": "0.5,0.5",
+            "styles": [
+              {
+                "thresholds": [
+                  "0.5",
+                  "0.5"
+                ]
+              }
+            ],
             "title": "peer-3",
             "type": "singlestat",
             "valueFontSize": "50%",
@@ -435,7 +456,14 @@
                 "tags": []
               }
             ],
-            "thresholds": "0.5,0.5",
+            "styles": [
+              {
+                "thresholds": [
+                  "0.5",
+                  "0.5"
+                ]
+              }
+            ],
             "title": "peer-4",
             "type": "singlestat",
             "valueFontSize": "50%",
@@ -552,7 +580,11 @@
                 ]
               }
             ],
-            "thresholds": "",
+            "styles": [
+              {
+                "thresholds": []
+              }
+            ],
             "title": "peer-1",
             "type": "singlestat",
             "valueFontSize": "50%",
@@ -647,7 +679,12 @@
                 ]
               }
             ],
-            "thresholds": "",
+            "styles": [
+              {
+                "thresholds": [
+                ]
+              }
+            ],
             "title": "peer-2",
             "type": "singlestat",
             "valueFontSize": "50%",
@@ -742,7 +779,12 @@
                 ]
               }
             ],
-            "thresholds": "",
+            "styles": [
+              {
+                "thresholds": [
+                ]
+              }
+            ],
             "title": "peer-3",
             "type": "singlestat",
             "valueFontSize": "50%",
@@ -837,7 +879,12 @@
                 ]
               }
             ],
-            "thresholds": "",
+            "styles": [
+              {
+                "thresholds": [
+                ]
+              }
+            ],
             "title": "peer-4",
             "type": "singlestat",
             "valueFontSize": "50%",
@@ -938,7 +985,12 @@
                 "tags": []
               }
             ],
-            "thresholds": "",
+            "styles": [
+              {
+                "thresholds": [
+                ]
+              }
+            ],
             "title": "peer-1",
             "type": "singlestat",
             "valueFontSize": "50%",
@@ -1027,7 +1079,12 @@
                 "tags": []
               }
             ],
-            "thresholds": "",
+            "styles": [
+              {
+                "thresholds": [
+                ]
+              }
+            ],
             "title": "peer-2",
             "type": "singlestat",
             "valueFontSize": "50%",
@@ -1116,7 +1173,12 @@
                 "tags": []
               }
             ],
-            "thresholds": "",
+            "styles": [
+              {
+                "thresholds": [
+                ]
+              }
+            ],
             "title": "peer-3",
             "type": "singlestat",
             "valueFontSize": "50%",
@@ -1205,7 +1267,12 @@
                 "tags": []
               }
             ],
-            "thresholds": "",
+            "styles": [
+              {
+                "thresholds": [
+                ]
+              }
+            ],
             "title": "peer-4",
             "type": "singlestat",
             "valueFontSize": "50%",
