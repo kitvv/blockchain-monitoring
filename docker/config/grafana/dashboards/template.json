@@ -1,4 +1,17 @@
 {
+  "meta": {
+    "type": "db",
+    "canSave": true,
+    "canEdit": true,
+    "canStar": true,
+    "slug": "monitoring-hyperledger",
+    "expires": "0001-01-01T00:00:00Z",
+    "created": "2017-05-12T05:00:52Z",
+    "updated": "2017-05-12T05:10:37Z",
+    "updatedBy": "admin",
+    "createdBy": "admin",
+    "version": 1
+  },
   "dashboard": {
     "__inputs": [
       {
@@ -63,7 +76,7 @@
               "thresholdLabels": false,
               "thresholdMarkers": true
             },
-            "id": 4,
+            "id": 0,
             "interval": null,
             "links": [],
             "mappingType": 1,
@@ -103,9 +116,9 @@
                 "dsType": "influxdb",
                 "groupBy": [],
                 "hide": false,
-                "measurement": "peer-01",
+                "measurement": "peer-1",
                 "policy": "autogen",
-                "query": "SELECT \"status\" FROM \"autogen\".\"peer-01\"",
+                "query": "SELECT \"status\" FROM \"autogen\".\"peer-1\"",
                 "rawQuery": true,
                 "refId": "A",
                 "resultFormat": "time_series",
@@ -123,9 +136,309 @@
               }
             ],
             "thresholds": "0.5,0.5",
-            "title": "peer-01",
+            "title": "peer-1",
             "type": "singlestat",
-            "valueFontSize": "80%",
+            "valueFontSize": "50%",
+            "valueMaps": [
+              {
+                "op": "=",
+                "text": "",
+                "value": "null"
+              },
+              {
+                "op": "=",
+                "text": "DOWN",
+                "value": "0"
+              },
+              {
+                "op": "=",
+                "text": "UP",
+                "value": "1"
+              }
+            ],
+            "valueName": "current"
+          },
+          {
+            "cacheTimeout": null,
+            "colorBackground": true,
+            "colorValue": false,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "datasource": null,
+            "format": "percentunit",
+            "gauge": {
+              "maxValue": 1,
+              "minValue": 0,
+              "show": false,
+              "thresholdLabels": false,
+              "thresholdMarkers": true
+            },
+            "id": 1,
+            "interval": null,
+            "links": [],
+            "mappingType": 1,
+            "mappingTypes": [
+              {
+                "name": "value to text",
+                "value": 1
+              },
+              {
+                "name": "range to text",
+                "value": 2
+              }
+            ],
+            "maxDataPoints": 100,
+            "nullPointMode": "connected",
+            "nullText": null,
+            "postfix": "",
+            "postfixFontSize": "50%",
+            "prefix": "",
+            "prefixFontSize": "50%",
+            "rangeMaps": [
+              {
+                "from": "null",
+                "text": "",
+                "to": ""
+              }
+            ],
+            "span": 3,
+            "sparkline": {
+              "fillColor": "rgba(31, 118, 189, 0.18)",
+              "full": true,
+              "lineColor": "rgb(255, 0, 0)",
+              "show": true
+            },
+            "targets": [
+              {
+                "dsType": "influxdb",
+                "groupBy": [],
+                "hide": false,
+                "measurement": "peer-2",
+                "policy": "autogen",
+                "query": "SELECT \"status\" FROM \"autogen\".\"peer-2\"",
+                "rawQuery": true,
+                "refId": "A",
+                "resultFormat": "time_series",
+                "select": [
+                  [
+                    {
+                      "params": [
+                        "status"
+                      ],
+                      "type": "field"
+                    }
+                  ]
+                ],
+                "tags": []
+              }
+            ],
+            "thresholds": "0.5,0.5",
+            "title": "peer-2",
+            "type": "singlestat",
+            "valueFontSize": "50%",
+            "valueMaps": [
+              {
+                "op": "=",
+                "text": "",
+                "value": "null"
+              },
+              {
+                "op": "=",
+                "text": "DOWN",
+                "value": "0"
+              },
+              {
+                "op": "=",
+                "text": "UP",
+                "value": "1"
+              }
+            ],
+            "valueName": "current"
+          },
+          {
+            "cacheTimeout": null,
+            "colorBackground": true,
+            "colorValue": false,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "datasource": null,
+            "format": "percentunit",
+            "gauge": {
+              "maxValue": 1,
+              "minValue": 0,
+              "show": false,
+              "thresholdLabels": false,
+              "thresholdMarkers": true
+            },
+            "id": 2,
+            "interval": null,
+            "links": [],
+            "mappingType": 1,
+            "mappingTypes": [
+              {
+                "name": "value to text",
+                "value": 1
+              },
+              {
+                "name": "range to text",
+                "value": 2
+              }
+            ],
+            "maxDataPoints": 100,
+            "nullPointMode": "connected",
+            "nullText": null,
+            "postfix": "",
+            "postfixFontSize": "50%",
+            "prefix": "",
+            "prefixFontSize": "50%",
+            "rangeMaps": [
+              {
+                "from": "null",
+                "text": "",
+                "to": ""
+              }
+            ],
+            "span": 3,
+            "sparkline": {
+              "fillColor": "rgba(31, 118, 189, 0.18)",
+              "full": true,
+              "lineColor": "rgb(255, 0, 0)",
+              "show": true
+            },
+            "targets": [
+              {
+                "dsType": "influxdb",
+                "groupBy": [],
+                "hide": false,
+                "measurement": "peer-3",
+                "policy": "autogen",
+                "query": "SELECT \"status\" FROM \"autogen\".\"peer-3\"",
+                "rawQuery": true,
+                "refId": "A",
+                "resultFormat": "time_series",
+                "select": [
+                  [
+                    {
+                      "params": [
+                        "status"
+                      ],
+                      "type": "field"
+                    }
+                  ]
+                ],
+                "tags": []
+              }
+            ],
+            "thresholds": "0.5,0.5",
+            "title": "peer-3",
+            "type": "singlestat",
+            "valueFontSize": "50%",
+            "valueMaps": [
+              {
+                "op": "=",
+                "text": "",
+                "value": "null"
+              },
+              {
+                "op": "=",
+                "text": "DOWN",
+                "value": "0"
+              },
+              {
+                "op": "=",
+                "text": "UP",
+                "value": "1"
+              }
+            ],
+            "valueName": "current"
+          },
+          {
+            "cacheTimeout": null,
+            "colorBackground": true,
+            "colorValue": false,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "datasource": null,
+            "format": "percentunit",
+            "gauge": {
+              "maxValue": 1,
+              "minValue": 0,
+              "show": false,
+              "thresholdLabels": false,
+              "thresholdMarkers": true
+            },
+            "id": 3,
+            "interval": null,
+            "links": [],
+            "mappingType": 1,
+            "mappingTypes": [
+              {
+                "name": "value to text",
+                "value": 1
+              },
+              {
+                "name": "range to text",
+                "value": 2
+              }
+            ],
+            "maxDataPoints": 100,
+            "nullPointMode": "connected",
+            "nullText": null,
+            "postfix": "",
+            "postfixFontSize": "50%",
+            "prefix": "",
+            "prefixFontSize": "50%",
+            "rangeMaps": [
+              {
+                "from": "null",
+                "text": "",
+                "to": ""
+              }
+            ],
+            "span": 3,
+            "sparkline": {
+              "fillColor": "rgba(31, 118, 189, 0.18)",
+              "full": true,
+              "lineColor": "rgb(255, 0, 0)",
+              "show": true
+            },
+            "targets": [
+              {
+                "dsType": "influxdb",
+                "groupBy": [],
+                "hide": false,
+                "measurement": "peer-4",
+                "policy": "autogen",
+                "query": "SELECT \"status\" FROM \"autogen\".\"peer-4\"",
+                "rawQuery": true,
+                "refId": "A",
+                "resultFormat": "time_series",
+                "select": [
+                  [
+                    {
+                      "params": [
+                        "status"
+                      ],
+                      "type": "field"
+                    }
+                  ]
+                ],
+                "tags": []
+              }
+            ],
+            "thresholds": "0.5,0.5",
+            "title": "peer-4",
+            "type": "singlestat",
+            "valueFontSize": "50%",
             "valueMaps": [
               {
                 "op": "=",
@@ -175,7 +488,7 @@
               "thresholdLabels": false,
               "thresholdMarkers": true
             },
-            "id": 15,
+            "id": 0,
             "interval": null,
             "links": [],
             "mappingType": 1,
@@ -214,9 +527,9 @@
               {
                 "dsType": "influxdb",
                 "groupBy": [],
-                "measurement": "peer-01",
+                "measurement": "peer-1",
                 "policy": "autogen",
-                "query": "SELECT \"channel\" FROM \"autogen\".\"peer-01\" WHERE \"TAG_STATUS\" = 'UP'",
+                "query": "SELECT \"channel\" FROM \"autogen\".\"peer-1\" WHERE \"TAG_STATUS\" = 'UP'",
                 "rawQuery": true,
                 "refId": "A",
                 "resultFormat": "time_series",
@@ -240,9 +553,294 @@
               }
             ],
             "thresholds": "",
-            "title": "peer-01",
+            "title": "peer-1",
             "type": "singlestat",
-            "valueFontSize": "80%",
+            "valueFontSize": "50%",
+            "valueMaps": [
+              {
+                "op": "=",
+                "text": "",
+                "value": "null"
+              }
+            ],
+            "valueName": "current"
+          },
+          {
+            "cacheTimeout": null,
+            "colorBackground": false,
+            "colorValue": false,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "datasource": null,
+            "format": "none",
+            "gauge": {
+              "maxValue": 100,
+              "minValue": 0,
+              "show": false,
+              "thresholdLabels": false,
+              "thresholdMarkers": true
+            },
+            "id": 1,
+            "interval": null,
+            "links": [],
+            "mappingType": 1,
+            "mappingTypes": [
+              {
+                "name": "value to text",
+                "value": 1
+              },
+              {
+                "name": "range to text",
+                "value": 2
+              }
+            ],
+            "maxDataPoints": 100,
+            "nullPointMode": "connected",
+            "nullText": null,
+            "postfix": "",
+            "postfixFontSize": "50%",
+            "prefix": "",
+            "prefixFontSize": "50%",
+            "rangeMaps": [
+              {
+                "from": "null",
+                "text": "N/A",
+                "to": "null"
+              }
+            ],
+            "span": 3,
+            "sparkline": {
+              "fillColor": "rgba(31, 118, 189, 0.18)",
+              "full": false,
+              "lineColor": "rgb(31, 120, 193)",
+              "show": false
+            },
+            "targets": [
+              {
+                "dsType": "influxdb",
+                "groupBy": [],
+                "measurement": "peer-2",
+                "policy": "autogen",
+                "query": "SELECT \"channel\" FROM \"autogen\".\"peer-2\" WHERE \"TAG_STATUS\" = 'UP'",
+                "rawQuery": true,
+                "refId": "A",
+                "resultFormat": "time_series",
+                "select": [
+                  [
+                    {
+                      "params": [
+                        "channel"
+                      ],
+                      "type": "field"
+                    }
+                  ]
+                ],
+                "tags": [
+                  {
+                    "key": "TAG_STATUS",
+                    "operator": "=",
+                    "value": "UP"
+                  }
+                ]
+              }
+            ],
+            "thresholds": "",
+            "title": "peer-2",
+            "type": "singlestat",
+            "valueFontSize": "50%",
+            "valueMaps": [
+              {
+                "op": "=",
+                "text": "",
+                "value": "null"
+              }
+            ],
+            "valueName": "current"
+          },
+          {
+            "cacheTimeout": null,
+            "colorBackground": false,
+            "colorValue": false,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "datasource": null,
+            "format": "none",
+            "gauge": {
+              "maxValue": 100,
+              "minValue": 0,
+              "show": false,
+              "thresholdLabels": false,
+              "thresholdMarkers": true
+            },
+            "id": 2,
+            "interval": null,
+            "links": [],
+            "mappingType": 1,
+            "mappingTypes": [
+              {
+                "name": "value to text",
+                "value": 1
+              },
+              {
+                "name": "range to text",
+                "value": 2
+              }
+            ],
+            "maxDataPoints": 100,
+            "nullPointMode": "connected",
+            "nullText": null,
+            "postfix": "",
+            "postfixFontSize": "50%",
+            "prefix": "",
+            "prefixFontSize": "50%",
+            "rangeMaps": [
+              {
+                "from": "null",
+                "text": "N/A",
+                "to": "null"
+              }
+            ],
+            "span": 3,
+            "sparkline": {
+              "fillColor": "rgba(31, 118, 189, 0.18)",
+              "full": false,
+              "lineColor": "rgb(31, 120, 193)",
+              "show": false
+            },
+            "targets": [
+              {
+                "dsType": "influxdb",
+                "groupBy": [],
+                "measurement": "peer-3",
+                "policy": "autogen",
+                "query": "SELECT \"channel\" FROM \"autogen\".\"peer-3\" WHERE \"TAG_STATUS\" = 'UP'",
+                "rawQuery": true,
+                "refId": "A",
+                "resultFormat": "time_series",
+                "select": [
+                  [
+                    {
+                      "params": [
+                        "channel"
+                      ],
+                      "type": "field"
+                    }
+                  ]
+                ],
+                "tags": [
+                  {
+                    "key": "TAG_STATUS",
+                    "operator": "=",
+                    "value": "UP"
+                  }
+                ]
+              }
+            ],
+            "thresholds": "",
+            "title": "peer-3",
+            "type": "singlestat",
+            "valueFontSize": "50%",
+            "valueMaps": [
+              {
+                "op": "=",
+                "text": "",
+                "value": "null"
+              }
+            ],
+            "valueName": "current"
+          },
+          {
+            "cacheTimeout": null,
+            "colorBackground": false,
+            "colorValue": false,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "datasource": null,
+            "format": "none",
+            "gauge": {
+              "maxValue": 100,
+              "minValue": 0,
+              "show": false,
+              "thresholdLabels": false,
+              "thresholdMarkers": true
+            },
+            "id": 3,
+            "interval": null,
+            "links": [],
+            "mappingType": 1,
+            "mappingTypes": [
+              {
+                "name": "value to text",
+                "value": 1
+              },
+              {
+                "name": "range to text",
+                "value": 2
+              }
+            ],
+            "maxDataPoints": 100,
+            "nullPointMode": "connected",
+            "nullText": null,
+            "postfix": "",
+            "postfixFontSize": "50%",
+            "prefix": "",
+            "prefixFontSize": "50%",
+            "rangeMaps": [
+              {
+                "from": "null",
+                "text": "N/A",
+                "to": "null"
+              }
+            ],
+            "span": 3,
+            "sparkline": {
+              "fillColor": "rgba(31, 118, 189, 0.18)",
+              "full": false,
+              "lineColor": "rgb(31, 120, 193)",
+              "show": false
+            },
+            "targets": [
+              {
+                "dsType": "influxdb",
+                "groupBy": [],
+                "measurement": "peer-4",
+                "policy": "autogen",
+                "query": "SELECT \"channel\" FROM \"autogen\".\"peer-4\" WHERE \"TAG_STATUS\" = 'UP'",
+                "rawQuery": true,
+                "refId": "A",
+                "resultFormat": "time_series",
+                "select": [
+                  [
+                    {
+                      "params": [
+                        "channel"
+                      ],
+                      "type": "field"
+                    }
+                  ]
+                ],
+                "tags": [
+                  {
+                    "key": "TAG_STATUS",
+                    "operator": "=",
+                    "value": "UP"
+                  }
+                ]
+              }
+            ],
+            "thresholds": "",
+            "title": "peer-4",
+            "type": "singlestat",
+            "valueFontSize": "50%",
             "valueMaps": [
               {
                 "op": "=",
@@ -282,7 +880,7 @@
               "thresholdLabels": false,
               "thresholdMarkers": true
             },
-            "id": 19,
+            "id": 0,
             "interval": null,
             "links": [],
             "mappingType": 1,
@@ -321,9 +919,9 @@
               {
                 "dsType": "influxdb",
                 "groupBy": [],
-                "measurement": "peer-01",
+                "measurement": "peer-1",
                 "policy": "default",
-                "query": "SELECT \"chaincode\" FROM \"peer-01\"",
+                "query": "SELECT \"chaincode\" FROM \"peer-1\" WHERE \"TAG_STATUS\" = 'UP'",
                 "rawQuery": true,
                 "refId": "A",
                 "resultFormat": "time_series",
@@ -341,9 +939,276 @@
               }
             ],
             "thresholds": "",
-            "title": "peer-01",
+            "title": "peer-1",
             "type": "singlestat",
-            "valueFontSize": "80%",
+            "valueFontSize": "50%",
+            "valueMaps": [
+              {
+                "op": "=",
+                "text": "",
+                "value": "null"
+              }
+            ],
+            "valueName": "current"
+          },
+          {
+            "cacheTimeout": null,
+            "colorBackground": false,
+            "colorValue": false,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "datasource": null,
+            "format": "none",
+            "gauge": {
+              "maxValue": 100,
+              "minValue": 0,
+              "show": false,
+              "thresholdLabels": false,
+              "thresholdMarkers": true
+            },
+            "id": 1,
+            "interval": null,
+            "links": [],
+            "mappingType": 1,
+            "mappingTypes": [
+              {
+                "name": "value to text",
+                "value": 1
+              },
+              {
+                "name": "range to text",
+                "value": 2
+              }
+            ],
+            "maxDataPoints": 100,
+            "nullPointMode": "connected",
+            "nullText": null,
+            "postfix": "",
+            "postfixFontSize": "50%",
+            "prefix": "",
+            "prefixFontSize": "50%",
+            "rangeMaps": [
+              {
+                "from": "null",
+                "text": "N/A",
+                "to": "null"
+              }
+            ],
+            "span": 3,
+            "sparkline": {
+              "fillColor": "rgba(31, 118, 189, 0.18)",
+              "full": false,
+              "lineColor": "rgb(31, 120, 193)",
+              "show": false
+            },
+            "targets": [
+              {
+                "dsType": "influxdb",
+                "groupBy": [],
+                "measurement": "peer-2",
+                "policy": "default",
+                "query": "SELECT \"chaincode\" FROM \"peer-2\" WHERE \"TAG_STATUS\" = 'UP'",
+                "rawQuery": true,
+                "refId": "A",
+                "resultFormat": "time_series",
+                "select": [
+                  [
+                    {
+                      "params": [
+                        "chaincode"
+                      ],
+                      "type": "field"
+                    }
+                  ]
+                ],
+                "tags": []
+              }
+            ],
+            "thresholds": "",
+            "title": "peer-2",
+            "type": "singlestat",
+            "valueFontSize": "50%",
+            "valueMaps": [
+              {
+                "op": "=",
+                "text": "",
+                "value": "null"
+              }
+            ],
+            "valueName": "current"
+          },
+          {
+            "cacheTimeout": null,
+            "colorBackground": false,
+            "colorValue": false,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "datasource": null,
+            "format": "none",
+            "gauge": {
+              "maxValue": 100,
+              "minValue": 0,
+              "show": false,
+              "thresholdLabels": false,
+              "thresholdMarkers": true
+            },
+            "id": 2,
+            "interval": null,
+            "links": [],
+            "mappingType": 1,
+            "mappingTypes": [
+              {
+                "name": "value to text",
+                "value": 1
+              },
+              {
+                "name": "range to text",
+                "value": 2
+              }
+            ],
+            "maxDataPoints": 100,
+            "nullPointMode": "connected",
+            "nullText": null,
+            "postfix": "",
+            "postfixFontSize": "50%",
+            "prefix": "",
+            "prefixFontSize": "50%",
+            "rangeMaps": [
+              {
+                "from": "null",
+                "text": "N/A",
+                "to": "null"
+              }
+            ],
+            "span": 3,
+            "sparkline": {
+              "fillColor": "rgba(31, 118, 189, 0.18)",
+              "full": false,
+              "lineColor": "rgb(31, 120, 193)",
+              "show": false
+            },
+            "targets": [
+              {
+                "dsType": "influxdb",
+                "groupBy": [],
+                "measurement": "peer-3",
+                "policy": "default",
+                "query": "SELECT \"chaincode\" FROM \"peer-3\" WHERE \"TAG_STATUS\" = 'UP'",
+                "rawQuery": true,
+                "refId": "A",
+                "resultFormat": "time_series",
+                "select": [
+                  [
+                    {
+                      "params": [
+                        "chaincode"
+                      ],
+                      "type": "field"
+                    }
+                  ]
+                ],
+                "tags": []
+              }
+            ],
+            "thresholds": "",
+            "title": "peer-3",
+            "type": "singlestat",
+            "valueFontSize": "50%",
+            "valueMaps": [
+              {
+                "op": "=",
+                "text": "",
+                "value": "null"
+              }
+            ],
+            "valueName": "current"
+          },
+          {
+            "cacheTimeout": null,
+            "colorBackground": false,
+            "colorValue": false,
+            "colors": [
+              "rgba(245, 54, 54, 0.9)",
+              "rgba(237, 129, 40, 0.89)",
+              "rgba(50, 172, 45, 0.97)"
+            ],
+            "datasource": null,
+            "format": "none",
+            "gauge": {
+              "maxValue": 100,
+              "minValue": 0,
+              "show": false,
+              "thresholdLabels": false,
+              "thresholdMarkers": true
+            },
+            "id": 3,
+            "interval": null,
+            "links": [],
+            "mappingType": 1,
+            "mappingTypes": [
+              {
+                "name": "value to text",
+                "value": 1
+              },
+              {
+                "name": "range to text",
+                "value": 2
+              }
+            ],
+            "maxDataPoints": 100,
+            "nullPointMode": "connected",
+            "nullText": null,
+            "postfix": "",
+            "postfixFontSize": "50%",
+            "prefix": "",
+            "prefixFontSize": "50%",
+            "rangeMaps": [
+              {
+                "from": "null",
+                "text": "N/A",
+                "to": "null"
+              }
+            ],
+            "span": 3,
+            "sparkline": {
+              "fillColor": "rgba(31, 118, 189, 0.18)",
+              "full": false,
+              "lineColor": "rgb(31, 120, 193)",
+              "show": false
+            },
+            "targets": [
+              {
+                "dsType": "influxdb",
+                "groupBy": [],
+                "measurement": "peer-4",
+                "policy": "default",
+                "query": "SELECT \"chaincode\" FROM \"peer-4\" WHERE \"TAG_STATUS\" = 'UP'",
+                "rawQuery": true,
+                "refId": "A",
+                "resultFormat": "time_series",
+                "select": [
+                  [
+                    {
+                      "params": [
+                        "chaincode"
+                      ],
+                      "type": "field"
+                    }
+                  ]
+                ],
+                "tags": []
+              }
+            ],
+            "thresholds": "",
+            "title": "peer-4",
+            "type": "singlestat",
+            "valueFontSize": "50%",
             "valueMaps": [
               {
                 "op": "=",
@@ -363,7 +1228,7 @@
       },
       {
         "collapse": false,
-        "height": 200,
+        "height": 193,
         "panels": [
           {
             "columns": [],
@@ -388,32 +1253,36 @@
               {
                 "colorMode": "row",
                 "colors": [
-                  "rgba(245, 54, 54, 0.9)",
+                  "rgba(50, 172, 45, 0.97)",
                   "rgba(237, 129, 40, 0.89)",
-                  "rgba(50, 172, 45, 0.97)"
+                  "rgba(245, 54, 54, 0.9)"
                 ],
                 "decimals": 0,
-                "pattern": "invoke.IS_VALID",
-                "thresholds": "0.5,0.5",
+                "pattern": "VALIDATION_RESULT_CODE",
+                "thresholds": [
+                  "0.5",
+                  "0.5"
+                ],
                 "type": "number",
                 "unit": "none"
               }
             ],
             "targets": [
               {
+                "alias": "",
                 "dsType": "influxdb",
                 "groupBy": [],
                 "measurement": "commonBlockEvent",
                 "policy": "autogen",
-                "query": "SELECT * FROM \"autogen\".\"commonBlockEvent\"",
+                "query": "SELECT \"CHANNEL_ID\", \"ENDORSEMENTS\", \"TRANSACTION_ID\",  \"VALIDATION_RESULT_NAME\", \"VALIDATION_RESULT_CODE\" FROM \"autogen\".\"commonBlockEvent\"",
                 "rawQuery": true,
                 "refId": "A",
-                "resultFormat": "time_series",
+                "resultFormat": "table",
                 "select": [
                   [
                     {
                       "params": [
-                        "IS_VALID"
+                        "CHANNEL_ID"
                       ],
                       "type": "field"
                     }
@@ -422,8 +1291,506 @@
                 "tags": []
               }
             ],
-            "title": "Event",
-            "transform": "timeseries_to_columns",
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Result Invoke Event",
+            "transform": "table",
+            "type": "table"
+          }
+        ],
+        "repeat": null,
+        "repeatIteration": null,
+        "repeatRowId": null,
+        "showTitle": true,
+        "title": "Event for channel: pubchan",
+        "titleSize": "h6"
+      },
+      {
+        "collapse": false,
+        "height": 283,
+        "panels": [
+          {
+            "alert": {
+              "conditions": [
+                {
+                  "evaluator": {
+                    "params": [
+                      0
+                    ],
+                    "type": "gt"
+                  },
+                  "operator": {
+                    "type": "and"
+                  },
+                  "query": {
+                    "params": [
+                      "A",
+                      "10s",
+                      "now"
+                    ]
+                  },
+                  "reducer": {
+                    "params": [],
+                    "type": "count"
+                  },
+                  "type": "query"
+                }
+              ],
+              "executionErrorState": "alerting",
+              "frequency": "10s",
+              "handler": 1,
+              "message": "query",
+              "name": "Performance Query alert",
+              "noDataState": "alerting",
+              "notifications": []
+            },
+            "aliasColors": {},
+            "bars": true,
+            "datasource": null,
+            "decimals": null,
+            "fill": 2,
+            "id": 34,
+            "legend": {
+              "alignAsTable": true,
+              "avg": false,
+              "current": true,
+              "hideEmpty": false,
+              "hideZero": false,
+              "max": true,
+              "min": true,
+              "rightSide": false,
+              "show": true,
+              "sideWidth": null,
+              "total": false,
+              "values": true
+            },
+            "lines": true,
+            "linewidth": 3,
+            "links": [],
+            "nullPointMode": "null as zero",
+            "percentage": false,
+            "pointradius": 3,
+            "points": true,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "span": 6,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "alias": "transaction count",
+                "dsType": "influxdb",
+                "groupBy": [
+                  {
+                    "params": [
+                      "1s"
+                    ],
+                    "type": "time"
+                  },
+                  {
+                    "params": [
+                      "0"
+                    ],
+                    "type": "fill"
+                  }
+                ],
+                "measurement": "query",
+                "policy": "default",
+                "query": "SELECT \"TRANSACTION_ID\" FROM \"commonBlockEvent\"",
+                "rawQuery": false,
+                "refId": "A",
+                "resultFormat": "time_series",
+                "select": [
+                  [
+                    {
+                      "params": [
+                        "TRANSACTION_ID"
+                      ],
+                      "type": "field"
+                    },
+                    {
+                      "params": [],
+                      "type": "count"
+                    }
+                  ]
+                ],
+                "tags": []
+              }
+            ],
+            "thresholds": [
+              {
+                "colorMode": "critical",
+                "fill": true,
+                "line": true,
+                "op": "gt",
+                "value": 0
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Performance Query",
+            "tooltip": {
+              "shared": false,
+              "sort": 0,
+              "value_type": "cumulative"
+            },
+            "type": "graph",
+            "xaxis": {
+              "mode": "time",
+              "name": null,
+              "show": false,
+              "values": [
+                "total"
+              ]
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": "invoke",
+                "logBase": 1,
+                "max": null,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": false
+              }
+            ]
+          },
+          {
+            "alert": {
+              "conditions": [
+                {
+                  "evaluator": {
+                    "params": [
+                      0
+                    ],
+                    "type": "gt"
+                  },
+                  "operator": {
+                    "type": "and"
+                  },
+                  "query": {
+                    "params": [
+                      "A",
+                      "10s",
+                      "now"
+                    ]
+                  },
+                  "reducer": {
+                    "params": [],
+                    "type": "avg"
+                  },
+                  "type": "query"
+                }
+              ],
+              "executionErrorState": "alerting",
+              "frequency": "10s",
+              "handler": 1,
+              "name": "Performance Invoke alert",
+              "noDataState": "alerting",
+              "notifications": []
+            },
+            "aliasColors": {},
+            "bars": true,
+            "datasource": null,
+            "decimals": null,
+            "fill": 2,
+            "id": 35,
+            "legend": {
+              "alignAsTable": true,
+              "avg": false,
+              "current": true,
+              "hideEmpty": false,
+              "hideZero": false,
+              "max": true,
+              "min": true,
+              "rightSide": false,
+              "show": true,
+              "sideWidth": null,
+              "total": false,
+              "values": true
+            },
+            "lines": true,
+            "linewidth": 3,
+            "links": [],
+            "nullPointMode": "null as zero",
+            "percentage": false,
+            "pointradius": 3,
+            "points": true,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "span": 6,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "alias": "transaction count",
+                "dsType": "influxdb",
+                "groupBy": [
+                  {
+                    "params": [
+                      "1s"
+                    ],
+                    "type": "time"
+                  },
+                  {
+                    "params": [
+                      "0"
+                    ],
+                    "type": "fill"
+                  }
+                ],
+                "measurement": "commonBlockEvent",
+                "policy": "default",
+                "query": "SELECT \"TRANSACTION_ID\" FROM \"commonBlockEvent\"",
+                "rawQuery": false,
+                "refId": "A",
+                "resultFormat": "time_series",
+                "select": [
+                  [
+                    {
+                      "params": [
+                        "TRANSACTION_ID"
+                      ],
+                      "type": "field"
+                    },
+                    {
+                      "params": [],
+                      "type": "count"
+                    }
+                  ]
+                ],
+                "tags": []
+              }
+            ],
+            "thresholds": [
+              {
+                "colorMode": "critical",
+                "fill": true,
+                "line": true,
+                "op": "gt",
+                "value": 0
+              }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Performance Invoke",
+            "tooltip": {
+              "shared": false,
+              "sort": 0,
+              "value_type": "cumulative"
+            },
+            "type": "graph",
+            "xaxis": {
+              "mode": "time",
+              "name": null,
+              "show": false,
+              "values": [
+                "total"
+              ]
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": "invoke",
+                "logBase": 1,
+                "max": null,
+                "min": "0",
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": false
+              }
+            ]
+          }
+        ],
+        "repeat": null,
+        "repeatIteration": null,
+        "repeatRowId": null,
+        "showTitle": false,
+        "title": "Dashboard Row",
+        "titleSize": "h6"
+      },
+      {
+        "collapse": false,
+        "height": 264,
+        "panels": [
+          {
+            "columns": [],
+            "filterNull": false,
+            "fontSize": "100%",
+            "id": 28,
+            "links": [],
+            "pageSize": null,
+            "scroll": true,
+            "showHeader": true,
+            "sort": {
+              "col": 0,
+              "desc": true
+            },
+            "span": 12,
+            "styles": [
+              {
+                "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                "pattern": "Time",
+                "type": "date"
+              },
+              {
+                "colorMode": null,
+                "colors": [
+                  "rgba(245, 54, 54, 0.9)",
+                  "rgba(237, 129, 40, 0.89)",
+                  "rgba(50, 172, 45, 0.97)"
+                ],
+                "decimals": 2,
+                "pattern": "/.*/",
+                "thresholds": [],
+                "type": "number",
+                "unit": "short"
+              }
+            ],
+            "targets": [
+              {
+                "dsType": "influxdb",
+                "groupBy": [
+                  {
+                    "params": [
+                      "$__interval"
+                    ],
+                    "type": "time"
+                  },
+                  {
+                    "params": [
+                      "null"
+                    ],
+                    "type": "fill"
+                  }
+                ],
+                "policy": "default",
+                "query": "SELECT * FROM \"autogen\".\"query\"",
+                "rawQuery": true,
+                "refId": "A",
+                "resultFormat": "table",
+                "select": [
+                  [
+                    {
+                      "params": [
+                        "value"
+                      ],
+                      "type": "field"
+                    },
+                    {
+                      "params": [],
+                      "type": "mean"
+                    }
+                  ]
+                ],
+                "tags": []
+              }
+            ],
+            "title": "Query",
+            "transform": "table",
+            "type": "table"
+          }
+        ],
+        "repeat": null,
+        "repeatIteration": null,
+        "repeatRowId": null,
+        "showTitle": false,
+        "title": "Dashboard Row",
+        "titleSize": "h6"
+      },
+      {
+        "collapse": false,
+        "height": 250,
+        "panels": [
+          {
+            "columns": [],
+            "filterNull": false,
+            "fontSize": "100%",
+            "id": 33,
+            "links": [],
+            "pageSize": null,
+            "scroll": true,
+            "showHeader": true,
+            "sort": {
+              "col": 0,
+              "desc": true
+            },
+            "span": 12,
+            "styles": [
+              {
+                "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                "pattern": "Time",
+                "type": "date"
+              },
+              {
+                "colorMode": null,
+                "colors": [
+                  "rgba(245, 54, 54, 0.9)",
+                  "rgba(237, 129, 40, 0.89)",
+                  "rgba(50, 172, 45, 0.97)"
+                ],
+                "decimals": 2,
+                "pattern": "/.*/",
+                "thresholds": [],
+                "type": "number",
+                "unit": "short"
+              }
+            ],
+            "targets": [
+              {
+                "dsType": "influxdb",
+                "groupBy": [
+                  {
+                    "params": [
+                      "$__interval"
+                    ],
+                    "type": "time"
+                  },
+                  {
+                    "params": [
+                      "null"
+                    ],
+                    "type": "fill"
+                  }
+                ],
+                "measurement": "invoke",
+                "policy": "default",
+                "query": "SELECT * FROM \"invoke\"",
+                "rawQuery": true,
+                "refId": "A",
+                "resultFormat": "table",
+                "select": [
+                  [
+                    {
+                      "params": [
+                        "value"
+                      ],
+                      "type": "field"
+                    },
+                    {
+                      "params": [],
+                      "type": "mean"
+                    }
+                  ]
+                ],
+                "tags": []
+              }
+            ],
+            "title": "Invoke",
+            "transform": "table",
             "type": "table"
           }
         ],
@@ -472,7 +1839,7 @@
       ]
     },
     "timezone": "browser",
-    "title": "Monitoring",
-    "version": 7
+    "title": "Blockchain Monitoring",
+    "version": 0
   }
 }
