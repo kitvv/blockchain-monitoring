@@ -12,20 +12,56 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "colorMode",
+    "fill",
+    "line",
     "op",
-    "text",
     "value"
 })
-public class ValueMap {
+public class Threshold {
 
+    @JsonProperty("colorMode")
+    private String colorMode;
+    @JsonProperty("fill")
+    private Boolean fill;
+    @JsonProperty("line")
+    private Boolean line;
     @JsonProperty("op")
     private String op;
-    @JsonProperty("text")
-    private String text;
     @JsonProperty("value")
-    private String value;
+    private Integer value;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+
+    @JsonProperty("colorMode")
+    public String getColorMode() {
+        return colorMode;
+    }
+
+    @JsonProperty("colorMode")
+    public void setColorMode(String colorMode) {
+        this.colorMode = colorMode;
+    }
+
+    @JsonProperty("fill")
+    public Boolean getFill() {
+        return fill;
+    }
+
+    @JsonProperty("fill")
+    public void setFill(Boolean fill) {
+        this.fill = fill;
+    }
+
+    @JsonProperty("line")
+    public Boolean getLine() {
+        return line;
+    }
+
+    @JsonProperty("line")
+    public void setLine(Boolean line) {
+        this.line = line;
+    }
 
     @JsonProperty("op")
     public String getOp() {
@@ -37,23 +73,13 @@ public class ValueMap {
         this.op = op;
     }
 
-    @JsonProperty("text")
-    public String getText() {
-        return text;
-    }
-
-    @JsonProperty("text")
-    public void setText(String text) {
-        this.text = text;
-    }
-
     @JsonProperty("value")
-    public String getValue() {
+    public Integer getValue() {
         return value;
     }
 
     @JsonProperty("value")
-    public void setValue(String value) {
+    public void setValue(Integer value) {
         this.value = value;
     }
 

@@ -2,6 +2,7 @@
 package org.blockchain_monitoring.model.grafana.dashboard;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -12,36 +13,23 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "from",
-    "to"
+    "params"
 })
-public class Time {
+public class Query {
 
-    @JsonProperty("from")
-    private String from;
-    @JsonProperty("to")
-    private String to;
+    @JsonProperty("params")
+    private List<String> params = null;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    @JsonProperty("from")
-    public String getFrom() {
-        return from;
+    @JsonProperty("params")
+    public List<String> getParams() {
+        return params;
     }
 
-    @JsonProperty("from")
-    public void setFrom(String from) {
-        this.from = from;
-    }
-
-    @JsonProperty("to")
-    public String getTo() {
-        return to;
-    }
-
-    @JsonProperty("to")
-    public void setTo(String to) {
-        this.to = to;
+    @JsonProperty("params")
+    public void setParams(List<String> params) {
+        this.params = params;
     }
 
     @JsonAnyGetter

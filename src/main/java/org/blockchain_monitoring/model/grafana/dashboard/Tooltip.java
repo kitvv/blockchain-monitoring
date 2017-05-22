@@ -12,36 +12,49 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "from",
-    "to"
+    "shared",
+    "sort",
+    "value_type"
 })
-public class Time {
+public class Tooltip {
 
-    @JsonProperty("from")
-    private String from;
-    @JsonProperty("to")
-    private String to;
+    @JsonProperty("shared")
+    private Boolean shared;
+    @JsonProperty("sort")
+    private Integer sort;
+    @JsonProperty("value_type")
+    private String valueType;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    @JsonProperty("from")
-    public String getFrom() {
-        return from;
+    @JsonProperty("shared")
+    public Boolean getShared() {
+        return shared;
     }
 
-    @JsonProperty("from")
-    public void setFrom(String from) {
-        this.from = from;
+    @JsonProperty("shared")
+    public void setShared(Boolean shared) {
+        this.shared = shared;
     }
 
-    @JsonProperty("to")
-    public String getTo() {
-        return to;
+    @JsonProperty("sort")
+    public Integer getSort() {
+        return sort;
     }
 
-    @JsonProperty("to")
-    public void setTo(String to) {
-        this.to = to;
+    @JsonProperty("sort")
+    public void setSort(Integer sort) {
+        this.sort = sort;
+    }
+
+    @JsonProperty("value_type")
+    public String getValueType() {
+        return valueType;
+    }
+
+    @JsonProperty("value_type")
+    public void setValueType(String valueType) {
+        this.valueType = valueType;
     }
 
     @JsonAnyGetter
