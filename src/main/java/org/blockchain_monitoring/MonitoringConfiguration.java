@@ -295,6 +295,11 @@ public class MonitoringConfiguration {
         selectForPeers(row, allPeers, selectForPeer);
     }
 
+    private void fillEventRow(Row row, List<Peer> allPeers) throws CloneNotSupportedException {
+        final String selectForPeer = "SELECT \"chaincode\" FROM \"%s\" WHERE \"TAG_STATUS\" = 'UP'";
+        selectForPeers(row, allPeers, selectForPeer);
+    }
+
     private void selectForPeers(Row row, List<Peer> allPeers, String selectForPeer) throws CloneNotSupportedException {
         List<Panel> panels = new ArrayList<>();
         final List<Panel> panels1 = row.getPanels();
