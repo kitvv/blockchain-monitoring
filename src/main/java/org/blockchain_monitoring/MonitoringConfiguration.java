@@ -1,22 +1,11 @@
 package org.blockchain_monitoring;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
-
-import javax.annotation.PostConstruct;
-import javax.security.cert.CertificateException;
-import javax.security.cert.X509Certificate;
-
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.protobuf.InvalidProtocolBufferException;
 import org.blockchain_monitoring.api.InfluxSearcher;
 import org.blockchain_monitoring.api.InfluxWriter;
+import org.blockchain_monitoring.fly_client_spring.FlyConfigService;
 import org.blockchain_monitoring.fly_client_spring.FlyNet;
 import org.blockchain_monitoring.fly_client_spring.event.EventsProcessor;
 import org.blockchain_monitoring.model.MonitoringParams;
@@ -44,6 +33,18 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import sun.security.x509.X500Name;
 
+import javax.annotation.PostConstruct;
+import javax.security.cert.CertificateException;
+import javax.security.cert.X509Certificate;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 // TODO CHANGE TO @Configuration GrafanaConfiguration, InfluxConfiguration
 @Component
 public class MonitoringConfiguration {
@@ -68,16 +69,19 @@ public class MonitoringConfiguration {
 
     private final EventsProcessor eventsProcessor;
 
+    private final FlyConfigService flyConfigService;
+
     private ObjectMapper mapper = new ObjectMapper(new JsonFactory());
 
     @Autowired
     public MonitoringConfiguration(InfluxWriter influxWriter, InfluxSearcher influxSearcher, MonitoringParams monitoringParams,
-                                   FlyNet flyNet, EventsProcessor eventsProcessor) {
+                                   FlyNet flyNet, EventsProcessor eventsProcessor, FlyConfigService flyConfigService) {
         this.influxSearcher = influxSearcher;
         this.influxWriter = influxWriter;
         this.monitoringParams = monitoringParams;
         this.flyNet = flyNet;
         this.eventsProcessor = eventsProcessor;
+        this.flyConfigService = flyConfigService;
     }
 
     @PostConstruct
@@ -165,6 +169,10 @@ public class MonitoringConfiguration {
         final Row statusRow = dashboard.getDashboard().getRows().get(0);
         final Row channelRow = dashboard.getDashboard().getRows().get(1);
         final Row chaincodeRow = dashboard.getDashboard().getRows().get(2);
+//        final Row queryRow = dashboard.getDashboard().getRows().get(3);
+//        final Row invokeRow = dashboard.getDashboard().getRows().get(4);
+        final Row eventHubRow = dashboard.getDashboard().getRows().get(5);
+        Set<String> channels = flyConfigService.availableChannelNames();
 
         final List<Peer> allPeers = new ArrayList<>();
         flyNet.getOrganisations().forEach(organisation -> {
@@ -175,15 +183,10 @@ public class MonitoringConfiguration {
             fillStatusRow(statusRow, allPeers);
             fillChannelRow(channelRow, allPeers);
             fillChaincodeRow(chaincodeRow, allPeers);
+            createEventPanels(eventHubRow, channels);
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
-
-        // Common
-//        final Row queryRow = dashboard.getDashboard().getRows().get(3);
-//        final Row invokeRow = dashboard.getDashboard().getRows().get(4);
-//        TODO add Event Listener
-//        final Row eventHubRow = dashboard.getDashboard().getRows().get(5);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -238,6 +241,7 @@ public class MonitoringConfiguration {
 
             writeCommonBlockEvent(blockEvent, validationResult, endorsementsList, transactionID);
             writeBlockEvent(blockEvent, validationResult, endorsementsList, transactionID);
+            writeRawBlockEvent(blockEvent);
         };
 
         eventsProcessor.addListener("metrics", metricsEventListener);
@@ -251,6 +255,13 @@ public class MonitoringConfiguration {
                 .addField(VALIDATION_RESULT_NAME, validationResult.name())
                 .addField(VALIDATION_RESULT_CODE, validationResult.getNumber())
                 .addField(ENDORSEMENTS, endorsementsList.toString())
+                .build();
+        influxWriter.write(point);
+    }
+
+    private void writeRawBlockEvent(BlockEvent blockEvent) {
+        Point point = Point.measurement(blockEvent.getChannelID())
+                .tag(CHANNEL_ID, blockEvent.getChannelID())
                 .build();
         influxWriter.write(point);
     }
@@ -301,6 +312,27 @@ public class MonitoringConfiguration {
             i++;
         }
         row.setPanels(panels);
+    }
+
+    private void createEventPanels(Row row, Set<String> channels) throws CloneNotSupportedException {
+        List<Panel> resultPanels = new ArrayList<>();
+        final List<Panel> panels = row.getPanels();
+
+        int idx = 0;
+        for(String channel : channels) {
+            final Panel templatePanel = panels.get(0).clone();
+            final Target templateTarget = templatePanel.getTargets().get(0).clone();
+            templatePanel.setId(idx++);
+            templateTarget.setMeasurement(channel);
+            final String query = "SELECT * FROM \"autogen\" WHERE \"CHANNEL_ID\" = \"" + channel + "\"";
+            templateTarget.setQuery(query);
+            templatePanel.setTargets(Collections.singletonList(templateTarget));
+            templatePanel.setTitle(channel + " EventHub");
+
+            resultPanels.add(templatePanel);
+        }
+
+        row.setPanels(resultPanels);
     }
 }
 
