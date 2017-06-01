@@ -198,9 +198,8 @@ public class MonitoringConfiguration {
 
     private void initEventHandlers() {
         BlockListener metricsEventListener = blockEvent -> {
-            FabricTransaction.TxValidationCode validationResult = blockEvent.getTransactionEvents().parallelStream()
-                    .map(transactionEvent -> FabricTransaction.TxValidationCode.forNumber(transactionEvent.validationCode()))
-                    .findFirst().get();
+            final byte validationCode = blockEvent.getTransactionEvents().iterator().next().getValidationCode();
+            FabricTransaction.TxValidationCode validationResult = FabricTransaction.TxValidationCode.forNumber(validationCode);
 
             List<String> endorsementsList;
             try {
@@ -234,38 +233,48 @@ public class MonitoringConfiguration {
                 endorsementsList = Collections.emptyList();
             }
 
-            final String transactionID = blockEvent.getTransactionEvents().get(0).getTransactionID();
-
-            writeCommonBlockEvent(blockEvent, validationResult, endorsementsList, transactionID);
-            writeBlockEvent(blockEvent, validationResult, endorsementsList, transactionID);
+            StringBuilder transactionIds = new StringBuilder();
+            blockEvent.getTransactionEvents().forEach(transactionEvent -> transactionIds.append(transactionEvent.getTransactionID()).append(","));
+            writeCommonBlockEvent(blockEvent, validationResult, endorsementsList, transactionIds.toString());
+            writeBlockEvent(blockEvent, validationResult, endorsementsList, transactionIds.toString());
         };
 
         eventsProcessor.addListener("metrics", metricsEventListener);
     }
 
     private void writeBlockEvent(BlockEvent blockEvent, FabricTransaction.TxValidationCode validationResult, List<String> endorsementsList, String transactionID) {
-        Point point = Point.measurement(blockEvent.getEventHub().getName())
-                .tag(CHANNEL_ID, blockEvent.getChannelID())
-                .tag(TRANSACTION_ID, transactionID)
-                .addField(TRANSACTION_ID, transactionID)
-                .addField(VALIDATION_RESULT_NAME, validationResult.name())
-                .addField(VALIDATION_RESULT_CODE, validationResult.getNumber())
-                .addField(ENDORSEMENTS, endorsementsList.toString())
-                .build();
-        influxWriter.write(point);
-    }
-
-    private synchronized void writeCommonBlockEvent(BlockEvent blockEvent, FabricTransaction.TxValidationCode validationResult, List<String> endorsementsList, String transactionID) {
-        boolean isCommonBlockEventExists = influxSearcher.query("SELECT * FROM \"" + COMMON_BLOCK_EVENT_MEASUREMENT + "\" WHERE \"" + TRANSACTION_ID + "\" = '" + transactionID + "' AND \"" + VALIDATION_RESULT_CODE + "\" = '" + validationResult.getNumber() + "'").get().getResults().get(0).getSeries() == null;
-        if (isCommonBlockEventExists) {
-            Point commonPoint = Point.measurement(COMMON_BLOCK_EVENT_MEASUREMENT)
-                    .addField(CHANNEL_ID, blockEvent.getChannelID())
+        try {
+            Point point = Point.measurement(blockEvent.getEventHub().getName())
+                    .tag(CHANNEL_ID, blockEvent.getChannelId())
+                    .tag(TRANSACTION_ID, transactionID)
                     .addField(TRANSACTION_ID, transactionID)
                     .addField(VALIDATION_RESULT_NAME, validationResult.name())
                     .addField(VALIDATION_RESULT_CODE, validationResult.getNumber())
                     .addField(ENDORSEMENTS, endorsementsList.toString())
                     .build();
-            influxWriter.write(commonPoint);
+            influxWriter.write(point);
+        } catch (InvalidProtocolBufferException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private synchronized void writeCommonBlockEvent(BlockEvent blockEvent, FabricTransaction.TxValidationCode validationResult, List<String> endorsementsList, String transactionID) {
+        boolean isCommonBlockEventExists = influxSearcher.query("SELECT * FROM \"" + COMMON_BLOCK_EVENT_MEASUREMENT + "\" WHERE \"" + TRANSACTION_ID + "\" = '" + transactionID + "' AND \"" + VALIDATION_RESULT_CODE + "\" = '" + validationResult.getNumber() + "'").get().getResults().get(0).getSeries() == null;
+        if (isCommonBlockEventExists) {
+
+            try {
+                final String channelId = blockEvent.getChannelId();
+                Point commonPoint = Point.measurement(COMMON_BLOCK_EVENT_MEASUREMENT)
+                        .addField(CHANNEL_ID, channelId)
+                        .addField(TRANSACTION_ID, transactionID)
+                        .addField(VALIDATION_RESULT_NAME, validationResult.name())
+                        .addField(VALIDATION_RESULT_CODE, validationResult.getNumber())
+                        .addField(ENDORSEMENTS, endorsementsList.toString())
+                        .build();
+                influxWriter.write(commonPoint);
+            } catch (InvalidProtocolBufferException e) {
+                e.printStackTrace();
+            }
         }
     }
 
