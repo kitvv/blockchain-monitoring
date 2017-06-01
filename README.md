@@ -137,6 +137,21 @@ Visit [link](https://github.com/blockchain-monitoring/blockchain-monitoring-api)
 ## Email notification
 For example, I set if we get invoke or query send me email notification and attach graph of metrics
 
+## Crash reports
+If you want to share crash information with blockchain monitoring owners, please add following env variables:
+
+`REPORTS_ENABLED=true`
+
+`USER_EMAIL=<your contact email>`
+
+Following information will be send:
+* user email
+* date
+* external ip address
+* stacktrace
+* exception name
+* exception message
+
 ### Invoke
 ![demo](http://blockchain-monitoring.org/images/invoke-alert.png)
 ### Query
