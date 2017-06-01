@@ -1,5 +1,6 @@
 [Blockchain Monitoring](http://blockchain-monitoring.org)
 ================
+## version '1.3-1.0.0-alpha2'
 
 
 **Continuous integration:** [![Build Status](https://travis-ci.org/blockchain-monitoring/blockchain-monitoring.svg?branch=master)](https://travis-ci.org/blockchain-monitoring/blockchain-monitoring)
