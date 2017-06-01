@@ -10,6 +10,12 @@ services:
     image: blockchainmonitoring/blockchain-monitoring:latest
     volumes:
       - $FABRIC_NET_CONFIG:/etc/conf/net-config.yaml
+#      if you want customize configuration grafana or influxdb
+#      - ./influxdb.conf:/etc/influxdb/influxdb.conf
+#      - ./config/grafana/grafana.ini:/etc/grafana/grafana.ini
+    environment:
+#     SCHEDULED_TASKS_DELAY - defaule is 1000 milliseconds
+      SCHEDULED_TASKS_DELAY: 10000
     ports:
       - "3000:3000"
       - "8086:8086"
